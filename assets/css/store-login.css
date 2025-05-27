@@ -1,0 +1,201 @@
+:root {
+    --primary-color: #2563eb;
+    --secondary-color: #1e40af;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-image: url('../../store/store.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    direction: rtl;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(26, 35, 126, 0.95) 0%, 
+        rgba(13, 71, 161, 0.9) 35%, 
+        rgba(2, 136, 209, 0.85) 100%
+    );
+    z-index: 1;
+}
+
+.main-content {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    z-index: 2;
+}
+
+.brand-logo {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 3;
+    color: white;
+    font-size: 1.5rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.brand-logo i {
+    font-size: 2rem;
+}
+
+.login-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2.5rem;
+    max-width: 500px;
+    width: 100%;
+    margin: auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: white;
+}
+
+.login-header h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.login-header p {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.form-label {
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.input-group {
+    margin-bottom: 1rem;
+}
+
+.input-group-text {
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    color: #6b7280;
+}
+
+.form-control {
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border-radius: 0 10px 10px 0;
+}
+
+.form-control:focus {
+    background: white;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+}
+
+.password-toggle {
+    cursor: pointer;
+    border-radius: 0 0 10px 10px;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    border: none;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    border-radius: 10px;
+    width: 100%;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    margin: 1rem 0;
+    color: white;
+}
+
+.form-check-input {
+    margin-left: 0.5rem;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 1.5rem 0;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.divider::before {
+    margin-left: 1rem;
+}
+
+.divider::after {
+    margin-right: 1rem;
+}
+
+.register-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.register-link:hover {
+    color: var(--primary-color);
+}
+
+.alert {
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+    .login-container {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .brand-logo {
+        top: 10px;
+        left: 10px;
+    }
+}
