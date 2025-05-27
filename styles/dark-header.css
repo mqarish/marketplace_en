@@ -1,0 +1,664 @@
+/* 
+ * تنسيقات الهيدر الداكن للسوق الإلكتروني
+ * تصميم عصري مع خلفية سوداء وأزرار برتقالية
+ */
+
+:root {
+    /* الألوان الأساسية */
+    --primary: #FF7A00;
+    --primary-hover: #E56E00;
+    --primary-light: #FF9633;
+    --dark: #000000;
+    --dark-light: #1A1A1A;
+    --dark-lighter: #2A2A2A;
+    --text-white: #FFFFFF;
+    --text-light: #CCCCCC;
+    --text-lighter: #999999;
+    --border-dark: #333333;
+    
+    /* ظلال */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+    
+    /* حواف */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-full: 9999px;
+    
+    /* انتقالات */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.25s ease;
+}
+
+/* إعادة تعيين أساسية */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Tajawal', sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    direction: rtl;
+    line-height: 1.5;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* ====== الهيدر الرئيسي ====== */
+.dark-header {
+    background-color: var(--dark);
+    color: var(--text-white);
+    box-shadow: var(--shadow-md);
+    position: relative;
+    z-index: 1000;
+}
+
+.header-top {
+    display: flex;
+    align-items: center;
+    padding: 15px 0;
+    gap: 20px;
+}
+
+/* الشعار */
+.logo {
+    margin-left: 20px;
+}
+
+.logo a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-white);
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+
+.logo i {
+    color: var(--primary);
+    font-size: 1.6rem;
+}
+
+/* شريط البحث */
+.search-container {
+    flex: 1;
+    max-width: 700px;
+}
+
+.search-container {
+    flex: 1;
+    max-width: 700px;
+}
+
+.search-form {
+    display: flex;
+    height: 46px;
+    background-color: var(--dark-light);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    border: 1px solid var(--border-dark);
+    transition: var(--transition-normal);
+    flex: 1;
+}
+
+.search-form:focus-within {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(255, 122, 0, 0.2);
+}
+
+.search-type {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    border-left: 1px solid var(--border-dark);
+    min-width: 120px;
+}
+
+.search-select {
+    appearance: none;
+    background: transparent;
+    border: none;
+    color: var(--text-white);
+    font-size: 14px;
+    width: 100%;
+    cursor: pointer;
+    outline: none;
+    padding-left: 15px;
+    font-family: inherit;
+}
+
+.search-select option {
+    background-color: var(--dark-light);
+    color: var(--text-white);
+}
+
+.search-type i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-lighter);
+    font-size: 12px;
+    pointer-events: none;
+}
+
+.search-input-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.search-input {
+    flex: 1;
+    height: 100%;
+    background: transparent;
+    border: none;
+    padding: 0 15px;
+    color: var(--text-white);
+    font-size: 14px;
+    outline: none;
+    font-family: inherit;
+}
+
+.search-input::placeholder {
+    color: var(--text-lighter);
+}
+
+/* تم إزالة header-buttons */
+
+.round-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: var(--transition-fast);
+    border: none;
+    cursor: pointer;
+}
+
+.search-btn {
+    background-color: var(--primary);
+    color: white;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.search-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+.location-btn {
+    color: var(--text-white);
+    background-color: var(--dark-lighter);
+    margin-right: 10px;
+}
+
+.location-btn:hover {
+    background-color: var(--primary);
+}
+
+/* أزرار المستخدم */
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    margin-right: auto;
+    padding-left: 20px;
+}
+
+.user-btn, .action-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-white);
+    padding: 8px 15px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    transition: var(--transition-fast);
+    position: relative;
+}
+
+.user-btn:hover, .action-btn:hover {
+    background-color: var(--dark-lighter);
+}
+
+.action-btn i, .user-btn i {
+    font-size: 1.4rem;
+}
+
+.cart-btn {
+    position: relative;
+    margin-right: 5px;
+}
+
+.cart-count {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: var(--primary);
+    color: var(--text-white);
+    font-size: 0.75rem;
+    font-weight: 700;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-full);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* القوائم المنسدلة */
+.user-dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background-color: var(--dark-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    min-width: 240px;
+    z-index: 100;
+    display: none;
+    overflow: hidden;
+    border: 1px solid var(--border-dark);
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    background-color: var(--dark-lighter);
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    background-color: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.user-info h6 {
+    font-size: 14px;
+    margin: 0 0 4px;
+    color: var(--text-white);
+}
+
+.user-info p {
+    font-size: 12px;
+    margin: 0;
+    color: var(--text-light);
+}
+
+.dropdown-divider {
+    height: 1px;
+    background-color: var(--border-dark);
+    margin: 5px 0;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    color: var(--text-white);
+    font-size: 14px;
+    transition: var(--transition-fast);
+}
+
+.dropdown-item:hover {
+    background-color: var(--dark-lighter);
+}
+
+.dropdown-item i {
+    color: var(--text-light);
+    font-size: 16px;
+}
+
+/* القائمة الرئيسية */
+.main-nav {
+    background-color: var(--dark-light);
+    padding: 0;
+    border-top: 1px solid var(--border-dark);
+    border-bottom: 1px solid var(--border-dark);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-list {
+    display: flex;
+    align-items: center;
+}
+
+.nav-item {
+    position: relative;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-white);
+    padding: 12px 15px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: var(--transition-fast);
+}
+
+.nav-link i {
+    font-size: 16px;
+}
+
+.nav-link:hover {
+    background-color: var(--dark-lighter);
+    color: var(--primary);
+}
+
+.nav-link.active {
+    color: var(--primary);
+}
+
+.nav-link.special {
+    color: var(--primary);
+}
+
+.dropdown-toggle i:last-child {
+    font-size: 10px;
+    margin-right: 4px;
+    transition: var(--transition-fast);
+}
+
+.dropdown-toggle.active i:last-child {
+    transform: rotate(180deg);
+}
+
+.categories-menu {
+    width: 600px;
+    padding: 20px;
+    right: 0;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.category-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 15px 10px;
+    border-radius: var(--radius-md);
+    transition: var(--transition-fast);
+    text-align: center;
+}
+
+.category-item:hover {
+    background-color: var(--dark-lighter);
+    color: var(--primary);
+}
+
+.category-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-full);
+    background-color: var(--dark-lighter);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: var(--primary);
+    transition: var(--transition-fast);
+}
+
+.category-item:hover .category-icon {
+    background-color: var(--primary);
+    color: white;
+}
+
+.category-item span {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* زر القائمة للجوال */
+.mobile-menu-toggle {
+    display: none;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    color: var(--text-white);
+    font-size: 24px;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    transition: var(--transition-fast);
+}
+
+.mobile-menu-toggle:hover {
+    background-color: var(--dark-lighter);
+}
+
+/* القائمة الجانبية للجوال */
+.mobile-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 280px;
+    height: 100%;
+    background-color: var(--dark);
+    z-index: 2000;
+    box-shadow: var(--shadow-lg);
+    transition: right 0.3s ease;
+    overflow-y: auto;
+}
+
+.mobile-menu.active {
+    right: 0;
+}
+
+.mobile-menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    border-bottom: 1px solid var(--border-dark);
+}
+
+.mobile-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.mobile-logo i {
+    color: var(--primary);
+}
+
+.mobile-menu-close {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-white);
+    font-size: 18px;
+    transition: var(--transition-fast);
+}
+
+.mobile-menu-close:hover {
+    background-color: var(--dark-lighter);
+}
+
+.mobile-menu-body {
+    padding: 15px 0;
+}
+
+.mobile-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    color: var(--text-white);
+    font-size: 14px;
+    transition: var(--transition-fast);
+}
+
+.mobile-nav-link i {
+    font-size: 18px;
+    width: 24px;
+    text-align: center;
+}
+
+.mobile-nav-link:hover {
+    background-color: var(--dark-lighter);
+    color: var(--primary);
+}
+
+.mobile-dropdown-toggle {
+    justify-content: space-between;
+}
+
+.mobile-dropdown-toggle i:last-child {
+    font-size: 12px;
+    transition: var(--transition-fast);
+}
+
+.mobile-dropdown-toggle.active i:last-child {
+    transform: rotate(180deg);
+}
+
+.mobile-dropdown-menu {
+    background-color: var(--dark-lighter);
+    display: none;
+}
+
+.mobile-dropdown-menu.show {
+    display: block;
+}
+
+.mobile-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 25px;
+    color: var(--text-light);
+    font-size: 14px;
+    transition: var(--transition-fast);
+}
+
+.mobile-dropdown-item:hover {
+    color: var(--primary);
+}
+
+.mobile-nav-divider {
+    height: 1px;
+    background-color: var(--border-dark);
+    margin: 10px 0;
+}
+
+.mobile-nav-link.special {
+    color: var(--primary);
+}
+
+/* تصميم متجاوب */
+@media (max-width: 992px) {
+    .header-top {
+        flex-wrap: wrap;
+    }
+    
+    .search-container {
+        order: 3;
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-top: 10px;
+    }
+    
+    .categories-menu {
+        width: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-list {
+        display: none;
+    }
+    
+    .mobile-menu-toggle {
+        display: flex;
+    }
+    
+    .categories-menu {
+        width: 100%;
+        right: 0;
+    }
+    
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .search-type {
+        display: none;
+    }
+    
+    .user-btn span, .action-btn span {
+        display: none !important;
+    }
+    
+    .user-btn, .action-btn {
+        padding: 8px;
+    }
+    
+    .categories-grid {
+        grid-template-columns: 1fr;
+    }
+}
