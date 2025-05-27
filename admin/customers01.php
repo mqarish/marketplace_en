@@ -1,0 +1,273 @@
+<?php
+require_once 'check_admin.php';
+require_once '../includes/functions.php';
+
+// معالجة الإجراءات
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
+    $customer_id = isset($_POST['customer_id']) ? (int)$_POST['customer_id'] : 0;
+    
+    switch ($_POST['action']) {
+        case 'change_status':
+            $status = $_POST['status'];
+            $stmt = $conn->prepare("UPDATE customers SET status = ? WHERE id = ?");
+            $stmt->bind_param("si", $status, $customer_id);
+            
+            if ($stmt->execute()) {
+                $_SESSION['success'] = "تم تحديث حالة العميل بنجاح";
+            } else {
+                $_SESSION['error'] = "حدث خطأ أثناء تحديث حالة العميل";
+            }
+            $stmt->close();
+            break;
+            
+        case 'delete':
+            $stmt = $conn->prepare("DELETE FROM customers WHERE id = ?");
+            $stmt->bind_param("i", $customer_id);
+            
+            if ($stmt->execute()) {
+                $_SESSION['success'] = "تم حذف العميل بنجاح";
+            } else {
+                $_SESSION['error'] = "حدث خطأ أثناء حذف العميل";
+            }
+            $stmt->close();
+            break;
+    }
+    
+    header("Location: customers.php");
+    exit;
+}
+
+// جلب العملاء مع معلومات إضافية
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$status_filter = isset($_GET['status']) ? trim($_GET['status']) : '';
+
+// بناء الاستعلام
+$query = "SELECT * FROM customers WHERE 1=1";
+$params = [];
+$types = "";
+
+if (!empty($search)) {
+    $query .= " AND (name LIKE ? OR email LIKE ?)";
+    $search_param = "%$search%";
+    array_push($params, $search_param, $search_param);
+    $types .= "ss";
+}
+
+if (!empty($status_filter)) {
+    $query .= " AND status = ?";
+    $params[] = $status_filter;
+    $types .= "s";
+}
+
+$query .= " ORDER BY created_at DESC";
+
+$stmt = $conn->prepare($query);
+if (!empty($params)) {
+    $stmt->bind_param($types, ...$params);
+}
+$stmt->execute();
+$result = $stmt->get_result();
+$customers = $result->fetch_all(MYSQLI_ASSOC);
+?>
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة العملاء - السوق الإلكتروني</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        .status-badge {
+            font-size: 0.875rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+        .status-pending {
+            background-color: #ffc107;
+            color: #000;
+        }
+        .status-active {
+            background-color: #198754;
+            color: #fff;
+        }
+        .status-blocked {
+            background-color: #dc3545;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <?php include '../includes/admin_navbar.php'; ?>
+
+    <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>إدارة العملاء</h2>
+        </div>
+
+        <?php if (isset($_SESSION['success'])): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <?php 
+                echo $_SESSION['success'];
+                unset($_SESSION['success']);
+                ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($_SESSION['error'])): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?php 
+                echo $_SESSION['error'];
+                unset($_SESSION['error']);
+                ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+
+        <!-- فلاتر البحث -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <form method="GET" class="row g-3">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" name="search" placeholder="بحث..." value="<?php echo htmlspecialchars($search); ?>">
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" name="status">
+                            <option value="">كل الحالات</option>
+                            <option value="pending" <?php echo $status_filter === 'pending' ? 'selected' : ''; ?>>في انتظار الموافقة</option>
+                            <option value="active" <?php echo $status_filter === 'active' ? 'selected' : ''; ?>>نشط</option>
+                            <option value="blocked" <?php echo $status_filter === 'blocked' ? 'selected' : ''; ?>>محظور</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">بحث</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>العميل</th>
+                                <th>البريد الإلكتروني</th>
+                                <th>الحالة</th>
+                                <th>تاريخ التسجيل</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (empty($customers)): ?>
+                                <tr>
+                                    <td colspan="5" class="text-center">لا يوجد عملاء</td>
+                                </tr>
+                            <?php else: ?>
+                                <?php foreach ($customers as $customer): ?>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-person-circle fs-4 me-2"></i>
+                                                <div>
+                                                    <?php echo htmlspecialchars($customer['name']); ?>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><?php echo htmlspecialchars($customer['email']); ?></td>
+                                        <td>
+                                            <span class="status-badge status-<?php echo $customer['status']; ?>">
+                                                <?php
+                                                switch ($customer['status']) {
+                                                    case 'pending':
+                                                        echo 'في انتظار الموافقة';
+                                                        break;
+                                                    case 'active':
+                                                        echo 'نشط';
+                                                        break;
+                                                    case 'blocked':
+                                                        echo 'محظور';
+                                                        break;
+                                                }
+                                                ?>
+                                            </span>
+                                        </td>
+                                        <td><?php echo date('Y-m-d', strtotime($customer['created_at'])); ?></td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                    <i class="bi bi-three-dots-vertical"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <?php if ($customer['status'] === 'pending'): ?>
+                                                        <li>
+                                                            <form method="POST" style="display: inline;">
+                                                                <input type="hidden" name="action" value="change_status">
+                                                                <input type="hidden" name="customer_id" value="<?php echo $customer['id']; ?>">
+                                                                <input type="hidden" name="status" value="active">
+                                                                <button type="submit" class="dropdown-item text-success">
+                                                                    <i class="bi bi-check-circle me-2"></i>
+                                                                    الموافقة على الحساب
+                                                                </button>
+                                                            </form>
+                                                        </li>
+                                                    <?php endif; ?>
+                                                    
+                                                    <?php if ($customer['status'] === 'active'): ?>
+                                                        <li>
+                                                            <form method="POST" style="display: inline;">
+                                                                <input type="hidden" name="action" value="change_status">
+                                                                <input type="hidden" name="customer_id" value="<?php echo $customer['id']; ?>">
+                                                                <input type="hidden" name="status" value="blocked">
+                                                                <button type="submit" class="dropdown-item text-warning">
+                                                                    <i class="bi bi-slash-circle me-2"></i>
+                                                                    حظر الحساب
+                                                                </button>
+                                                            </form>
+                                                        </li>
+                                                    <?php endif; ?>
+                                                    
+                                                    <?php if ($customer['status'] === 'blocked'): ?>
+                                                        <li>
+                                                            <form method="POST" style="display: inline;">
+                                                                <input type="hidden" name="action" value="change_status">
+                                                                <input type="hidden" name="customer_id" value="<?php echo $customer['id']; ?>">
+                                                                <input type="hidden" name="status" value="active">
+                                                                <button type="submit" class="dropdown-item text-success">
+                                                                    <i class="bi bi-check-circle me-2"></i>
+                                                                    إلغاء الحظر
+                                                                </button>
+                                                            </form>
+                                                        </li>
+                                                    <?php endif; ?>
+                                                    
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li>
+                                                        <form method="POST" style="display: inline;" onsubmit="return confirm('هل أنت متأكد من حذف هذا العميل؟');">
+                                                            <input type="hidden" name="action" value="delete">
+                                                            <input type="hidden" name="customer_id" value="<?php echo $customer['id']; ?>">
+                                                            <button type="submit" class="dropdown-item text-danger">
+                                                                <i class="bi bi-trash me-2"></i>
+                                                                حذف الحساب
+                                                            </button>
+                                                        </form>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

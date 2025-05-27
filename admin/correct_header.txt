@@ -1,0 +1,11 @@
+?>
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <?php include 'admin_header.php'; ?>
+</head>
+<body>
+    <?php include 'admin_navbar.php'; ?>
+    
+    <div class="container-fluid">
