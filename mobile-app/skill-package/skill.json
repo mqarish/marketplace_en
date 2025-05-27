@@ -1,0 +1,60 @@
+{
+  "manifest": {
+    "publishingInformation": {
+      "locales": {
+        "ar-SA": {
+          "summary": "تطبيق سوق المتجر للتسوق الإلكتروني",
+          "examplePhrases": [
+            "أليكسا، افتح سوق المتجر",
+            "أليكسا، اسأل سوق المتجر عن أحدث العروض",
+            "أليكسا، اسأل سوق المتجر عن حالة طلبي"
+          ],
+          "keywords": [
+            "تسوق",
+            "متجر",
+            "سوق",
+            "منتجات",
+            "عروض"
+          ],
+          "name": "سوق المتجر",
+          "description": "مهارة أليكسا الخاصة بتطبيق سوق المتجر للتسوق الإلكتروني. يمكنك البحث عن المنتجات، والتحقق من حالة طلباتك، ومعرفة أحدث العروض، وإضافة منتجات إلى سلة التسوق الخاصة بك."
+        }
+      },
+      "isAvailableWorldwide": false,
+      "testingInstructions": "قل 'أليكسا، افتح سوق المتجر' لبدء استخدام المهارة. يمكنك البحث عن المنتجات بقول 'ابحث عن هاتف ذكي'. يمكنك التحقق من حالة طلبك بقول 'ما هي حالة طلبي رقم 123'.",
+      "category": "SHOPPING",
+      "distributionCountries": [
+        "SA"
+      ]
+    },
+    "apis": {
+      "custom": {
+        "endpoint": {
+          "uri": "arn:aws:lambda:us-east-1:XXXXXXXXXXXX:function:marketplace-skill"
+        }
+      }
+    },
+    "manifestVersion": "1.0",
+    "permissions": [
+      {
+        "name": "alexa::profile:name:read"
+      },
+      {
+        "name": "alexa::profile:email:read"
+      }
+    ],
+    "privacyAndCompliance": {
+      "allowsPurchases": false,
+      "locales": {
+        "ar-SA": {
+          "privacyPolicyUrl": "https://www.example.com/privacy-policy",
+          "termsOfUseUrl": "https://www.example.com/terms-of-use"
+        }
+      },
+      "isExportCompliant": true,
+      "containsAds": false,
+      "isChildDirected": false,
+      "usesPersonalInfo": true
+    }
+  }
+}

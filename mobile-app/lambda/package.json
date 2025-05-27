@@ -1,0 +1,23 @@
+{
+  "name": "marketplace-alexa-skill",
+  "version": "1.0.0",
+  "description": "Alexa Skill for Marketplace Mobile App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "alexa",
+    "skill",
+    "marketplace",
+    "shopping"
+  ],
+  "author": "Marketplace Team",
+  "license": "ISC",
+  "dependencies": {
+    "ask-sdk-core": "^2.12.1",
+    "ask-sdk-model": "^1.38.1",
+    "axios": "^0.27.2",
+    "i18next": "^21.8.10"
+  }
+}

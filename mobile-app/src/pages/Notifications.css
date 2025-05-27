@@ -1,0 +1,91 @@
+.notification-header {
+  padding: 1rem;
+  background: #000000;
+  background: linear-gradient(135deg, #000000 0%, #2e3c4d 100%);
+  color: white;
+  text-align: center;
+}
+
+.notification-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.notification-header p {
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.notification-icon {
+  font-size: 1.5rem;
+  margin-right: 1rem;
+}
+
+.notification-icon.skeleton {
+  opacity: 0.3;
+}
+
+.notification-unread {
+  --background: rgba(255, 122, 0, 0.05);
+  border-right: 3px solid #FF7A00;
+}
+
+.notification-read {
+  opacity: 0.8;
+}
+
+.notification-meta {
+  display: flex;
+  align-items: center;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.time-icon {
+  font-size: 0.9rem;
+  margin-right: 0.3rem;
+}
+
+.time-text {
+  font-size: 0.8rem;
+}
+
+.empty-notifications {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  color: #ddd;
+}
+
+.empty-notifications h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+.empty-notifications p {
+  font-size: 0.9rem;
+  max-width: 300px;
+  margin: 0 auto 1.5rem;
+  color: #888;
+}
+
+ion-item-sliding {
+  margin-bottom: 2px;
+}
+
+ion-badge {
+  --padding-start: 8px;
+  --padding-end: 8px;
+}

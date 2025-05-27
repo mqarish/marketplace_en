@@ -1,0 +1,18 @@
+{
+  "android": {
+    "debug": {
+      "keystore": "marketplace.keystore",
+      "storePassword": "marketplace123",
+      "alias": "marketplace",
+      "password": "marketplace123",
+      "keystoreType": "jks"
+    },
+    "release": {
+      "keystore": "marketplace.keystore",
+      "storePassword": "marketplace123",
+      "alias": "marketplace",
+      "password": "marketplace123",
+      "keystoreType": "jks"
+    }
+  }
+}

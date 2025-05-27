@@ -1,0 +1,78 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "سوق المتجر",
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "SearchProductsIntent",
+          "slots": [
+            {
+              "name": "query",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "ابحث عن {query}",
+            "أريد شراء {query}",
+            "جد لي {query}",
+            "هل يوجد {query}"
+          ]
+        },
+        {
+          "name": "CheckOrderStatusIntent",
+          "slots": [
+            {
+              "name": "orderId",
+              "type": "AMAZON.NUMBER"
+            }
+          ],
+          "samples": [
+            "ما هي حالة طلبي رقم {orderId}",
+            "تتبع الطلب رقم {orderId}",
+            "أين وصل طلبي رقم {orderId}"
+          ]
+        },
+        {
+          "name": "GetLatestOffersIntent",
+          "slots": [],
+          "samples": [
+            "ما هي أحدث العروض",
+            "أخبرني عن العروض المتاحة",
+            "ما هي الخصومات الحالية"
+          ]
+        },
+        {
+          "name": "AddToCartIntent",
+          "slots": [
+            {
+              "name": "productName",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "أضف {productName} إلى سلة التسوق",
+            "أريد شراء {productName}",
+            "ضع {productName} في السلة"
+          ]
+        }
+      ],
+      "types": []
+    }
+  }
+}

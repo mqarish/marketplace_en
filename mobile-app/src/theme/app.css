@@ -1,0 +1,214 @@
+/* تنسيقات عامة للتطبيق */
+
+/* تعيين الاتجاه من اليمين إلى اليسار للغة العربية */
+html {
+  direction: rtl;
+}
+
+/* تنسيقات الخط */
+* {
+  font-family: 'Tajawal', 'Segoe UI', Tahoma, sans-serif;
+}
+
+/* تنسيقات عامة للصفحات */
+ion-content {
+  --background: #f5f5f5;
+}
+
+/* تنسيقات قسم العنوان (Hero Section) */
+.hero-section {
+  background: #000000;
+  background: linear-gradient(135deg, #000000 0%, #2e3c4d 100%);
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 20px 20px;
+  margin-bottom: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 122, 0, 0.3) 0%, rgba(0, 0, 0, 0) 70%);
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+.hero-section h1, .hero-section p {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-section h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.hero-section p {
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+/* تنسيقات البطاقات */
+ion-card {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* تنسيقات الأزرار */
+ion-button {
+  --border-radius: 8px;
+  font-weight: 500;
+}
+
+/* تنسيقات شريط التبويب */
+ion-tab-bar {
+  --background: #ffffff;
+  --border: none;
+  box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.05);
+  padding: 5px 0;
+}
+
+ion-tab-button {
+  --color: #999;
+  --color-selected: #FF7A00;
+}
+
+/* تنسيقات شريط الأدوات */
+ion-toolbar {
+  --background: #2e3c4d;
+  --color: white;
+}
+
+/* تنسيقات الرسائل */
+.error-message {
+  color: var(--ion-color-danger);
+  margin: 10px 0;
+  text-align: center;
+}
+
+.success-message {
+  color: var(--ion-color-success);
+  margin: 10px 0;
+  text-align: center;
+}
+
+/* تنسيقات الحالة الفارغة */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  text-align: center;
+  color: #999;
+}
+
+.empty-state ion-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  color: #ddd;
+}
+
+.empty-state h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+.empty-state p {
+  font-size: 0.9rem;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+/* تنسيقات حالة التحميل */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+/* تنسيقات الصور */
+.image-container {
+  position: relative;
+  overflow: hidden;
+  background-color: #f5f5f5;
+}
+
+/* تنسيقات الخط للعناوين */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  color: #333;
+}
+
+/* تنسيقات الألوان الرئيسية */
+.primary-color {
+  color: #FF7A00;
+}
+
+.secondary-color {
+  color: #2e3c4d;
+}
+
+/* تنسيقات الشارات */
+.badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.badge-primary {
+  background-color: #FF7A00;
+  color: white;
+}
+
+.badge-secondary {
+  background-color: #2e3c4d;
+  color: white;
+}
+
+.badge-success {
+  background-color: var(--ion-color-success);
+  color: white;
+}
+
+.badge-danger {
+  background-color: var(--ion-color-danger);
+  color: white;
+}
+
+/* تنسيقات الفواصل */
+.divider {
+  height: 1px;
+  background-color: #eee;
+  margin: 15px 0;
+}
+
+/* تنسيقات الوضع المظلم */
+@media (prefers-color-scheme: dark) {
+  ion-content {
+    --background: #121212;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: #f5f5f5;
+  }
+  
+  .divider {
+    background-color: #333;
+  }
+}
