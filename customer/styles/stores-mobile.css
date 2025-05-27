@@ -1,0 +1,134 @@
+/**
+ * تحسينات التوافق مع الأجهزة المحمولة لصفحة المتاجر
+ * يحتوي على إصلاحات وتحسينات لعرض صفحة المتاجر بشكل صحيح على جميع أحجام الشاشات
+ */
+
+/* ===== تحسينات عامة لصفحة المتاجر على الأجهزة المحمولة ===== */
+@media (max-width: 768px) {
+    /* تحسين رأس الصفحة */
+    .stores-header {
+        padding: 20px 0;
+        margin-bottom: 20px;
+    }
+    
+    .stores-title {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+    
+    .stores-description {
+        font-size: 0.9rem;
+    }
+    
+    /* تحسين بطاقات المتاجر */
+    .store-card {
+        margin-bottom: 15px;
+    }
+    
+    .store-logo {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .store-name {
+        font-size: 1.1rem;
+    }
+    
+    .store-location {
+        font-size: 0.85rem;
+    }
+    
+    .store-stats {
+        flex-wrap: wrap;
+    }
+    
+    .store-stat {
+        font-size: 0.8rem;
+        margin-right: 8px;
+        margin-bottom: 5px;
+    }
+    
+    /* تحسين أزرار التصفية */
+    .filter-dropdown {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .filter-dropdown .dropdown-menu {
+        width: 100%;
+    }
+    
+    /* تحسين ترقيم الصفحات */
+    .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .page-link {
+        padding: 0.4rem 0.75rem;
+    }
+}
+
+/* ===== تحسينات للأجهزة الصغيرة جداً ===== */
+@media (max-width: 576px) {
+    /* تعديل عرض بطاقات المتاجر */
+    .col-md-3.col-sm-6 {
+        width: 100%;
+    }
+    
+    .store-card {
+        padding: 10px;
+    }
+    
+    .store-details {
+        padding: 10px;
+    }
+    
+    .store-action-btn {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+    
+    /* تحسين حالة عدم وجود متاجر */
+    .no-stores {
+        padding: 20px;
+    }
+    
+    .no-stores-icon {
+        font-size: 3rem;
+        margin-bottom: 15px;
+    }
+    
+    .no-stores-title {
+        font-size: 1.2rem;
+    }
+    
+    .no-stores-text {
+        font-size: 0.9rem;
+    }
+}
+
+/* تحسينات إضافية للتفاعل */
+.store-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.store-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* تحسين عرض الفلاتر على الأجهزة المحمولة */
+@media (max-width: 768px) {
+    .filters-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filters-container .form-control,
+    .filters-container .form-select,
+    .filters-container .btn {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+}

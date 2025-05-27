@@ -1,0 +1,784 @@
+/* 
+* Shopify Style Header CSS
+* تنسيقات الهيدر بتصميم مشابه لـ Shopify 
+*/
+
+:root {
+    --shopify-primary: #008060;
+    --shopify-primary-hover: #004c3f;
+    --shopify-dark: #212326;
+    --shopify-light: #f6f6f7;
+    --shopify-border: #e1e3e5;
+    --shopify-text: #3d3d3d;
+    --shopify-text-light: #6d7175;
+    --shopify-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    --shopify-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.1);
+    --shopify-shadow-dropdown: 0 10px 40px rgba(0, 0, 0, 0.08);
+    --shopify-radius: 8px;
+    --shopify-transition: all 0.2s ease;
+}
+
+/* ===== الهيكل الأساسي للهيدر ===== */
+.shopify-header {
+    font-family: 'Tajawal', sans-serif;
+    background-color: #fff;
+    position: relative;
+    z-index: 100;
+    box-shadow: var(--shopify-shadow);
+}
+
+.shopify-header__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.shopify-header__main {
+    display: flex;
+    align-items: center;
+    height: 72px;
+    position: relative;
+}
+
+/* ===== الشعار ===== */
+.shopify-logo {
+    margin-left: 1rem;
+}
+
+.shopify-logo__link {
+    display: flex;
+    align-items: center;
+    color: var(--shopify-dark);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.shopify-logo__link i {
+    font-size: 1.75rem;
+    margin-left: 0.5rem;
+    color: var(--shopify-primary);
+}
+
+.shopify-logo__text {
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+}
+
+/* ===== قائمة التنقل الرئيسية ===== */
+.shopify-nav {
+    display: flex;
+    margin: 0 auto 0 2rem;
+}
+
+.shopify-nav__list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.shopify-nav__item {
+    position: relative;
+    margin: 0 0.25rem;
+}
+
+.shopify-nav__link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: var(--shopify-text);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9375rem;
+    border-radius: var(--shopify-radius);
+    transition: var(--shopify-transition);
+}
+
+.shopify-nav__link:hover,
+.shopify-nav__item:hover .shopify-nav__link {
+    color: var(--shopify-primary);
+    background-color: rgba(0, 128, 96, 0.05);
+}
+
+/* القوائم المنسدلة */
+.shopify-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    border-radius: var(--shopify-radius);
+    box-shadow: var(--shopify-shadow-dropdown);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: var(--shopify-transition);
+    z-index: 100;
+    margin-top: 0.5rem;
+    width: 520px;
+    pointer-events: none;
+}
+
+.shopify-nav__item:hover .shopify-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.shopify-dropdown__container {
+    display: flex;
+    padding: 1.5rem;
+}
+
+.shopify-dropdown__section {
+    flex: 1;
+    padding: 0 1rem;
+}
+
+.shopify-dropdown__heading {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--shopify-text-light);
+    margin: 0 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--shopify-border);
+}
+
+.shopify-dropdown__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.shopify-dropdown__link {
+    display: block;
+    padding: 0.5rem 0;
+    color: var(--shopify-text);
+    text-decoration: none;
+    font-size: 0.9375rem;
+    transition: var(--shopify-transition);
+}
+
+.shopify-dropdown__link:hover {
+    color: var(--shopify-primary);
+}
+
+.shopify-dropdown__link--more {
+    font-weight: 500;
+    color: var(--shopify-primary);
+}
+
+/* مربع الترويج في القائمة المنسدلة */
+.shopify-dropdown__promo {
+    background-color: var(--shopify-light);
+    padding: 1.5rem;
+    border-radius: var(--shopify-radius);
+    margin-top: 1rem;
+}
+
+.shopify-dropdown__promo-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+}
+
+.shopify-dropdown__promo-text {
+    color: var(--shopify-text-light);
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+.shopify-dropdown__promo-button {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: var(--shopify-primary);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.875rem;
+    border-radius: var(--shopify-radius);
+    transition: var(--shopify-transition);
+}
+
+.shopify-dropdown__promo-button:hover {
+    background-color: var(--shopify-primary-hover);
+    color: #fff;
+}
+
+/* ===== عناصر التحكم في الهيدر (البحث، الحساب، السلة) ===== */
+.shopify-header__actions {
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+}
+
+/* زر البحث */
+.shopify-header__search-toggle {
+    background: none;
+    border: none;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.125rem;
+    border-radius: 50%;
+    color: var(--shopify-text);
+    transition: var(--shopify-transition);
+    margin-left: 0.5rem;
+}
+
+.shopify-header__search-toggle:hover {
+    background-color: var(--shopify-light);
+    color: var(--shopify-primary);
+}
+
+/* رابط تسجيل الدخول */
+.shopify-header__login {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    margin-left: 0.5rem;
+    color: var(--shopify-text);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9375rem;
+    border-radius: var(--shopify-radius);
+    transition: var(--shopify-transition);
+}
+
+.shopify-header__login i {
+    margin-left: 0.5rem;
+    font-size: 1.125rem;
+}
+
+.shopify-header__login:hover {
+    background-color: var(--shopify-light);
+    color: var(--shopify-primary);
+}
+
+/* قائمة الحساب المنسدلة */
+.shopify-account-dropdown {
+    position: relative;
+    margin-left: 0.5rem;
+}
+
+.shopify-account-dropdown__toggle {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    padding: 0.5rem 1rem;
+    color: var(--shopify-text);
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.9375rem;
+    border-radius: var(--shopify-radius);
+    transition: var(--shopify-transition);
+}
+
+.shopify-account-dropdown__toggle i {
+    margin-left: 0.5rem;
+    font-size: 1.125rem;
+}
+
+.shopify-account-dropdown__toggle:hover {
+    background-color: var(--shopify-light);
+    color: var(--shopify-primary);
+}
+
+.shopify-account-dropdown__name {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.shopify-account-dropdown__menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    background-color: #fff;
+    border-radius: var(--shopify-radius);
+    box-shadow: var(--shopify-shadow-dropdown);
+    min-width: 260px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: var(--shopify-transition);
+    z-index: 100;
+    pointer-events: none;
+}
+
+.shopify-account-dropdown__menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.shopify-account-dropdown__header {
+    padding: 1rem;
+    border-bottom: 1px solid var(--shopify-border);
+}
+
+.shopify-account-dropdown__user {
+    display: flex;
+    align-items: center;
+}
+
+.shopify-account-dropdown__avatar {
+    font-size: 2rem;
+    margin-left: 0.75rem;
+    color: var(--shopify-text-light);
+}
+
+.shopify-account-dropdown__username {
+    font-weight: 600;
+    font-size: 0.9375rem;
+    margin-bottom: 0.25rem;
+}
+
+.shopify-account-dropdown__email {
+    font-size: 0.8125rem;
+    color: var(--shopify-text-light);
+}
+
+.shopify-account-dropdown__list {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem 0;
+}
+
+.shopify-account-dropdown__link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: var(--shopify-text);
+    text-decoration: none;
+    font-size: 0.9375rem;
+    transition: var(--shopify-transition);
+}
+
+.shopify-account-dropdown__link:hover {
+    background-color: var(--shopify-light);
+    color: var(--shopify-primary);
+}
+
+.shopify-account-dropdown__link--danger:hover {
+    color: #d72c0d;
+}
+
+.shopify-account-dropdown__divider {
+    height: 1px;
+    margin: 0.5rem 0;
+    background-color: var(--shopify-border);
+    border: none;
+}
+
+/* سلة التسوق */
+.shopify-header__cart {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 40px;
+    height: 40px;
+    margin-right: 0.5rem;
+    color: var(--shopify-text);
+    text-decoration: none;
+    font-size: 1.125rem;
+    border-radius: 50%;
+    transition: var(--shopify-transition);
+}
+
+.shopify-header__cart:hover {
+    background-color: var(--shopify-light);
+    color: var(--shopify-primary);
+}
+
+.shopify-header__cart-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    background-color: var(--shopify-primary);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 50%;
+}
+
+/* ===== شريط البحث ===== */
+.shopify-search {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    height: 100%;
+    z-index: 200;
+    display: none;
+}
+
+.shopify-search.active {
+    display: block;
+}
+
+.shopify-search__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    height: 100%;
+}
+
+.shopify-search__form {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.shopify-search__input-group {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.shopify-search__input-wrapper {
+    position: relative;
+    flex: 1;
+}
+
+.shopify-search__icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--shopify-text-light);
+    font-size: 1.125rem;
+}
+
+.shopify-search__input {
+    width: 100%;
+    height: 48px;
+    padding: 0 3rem 0 1rem;
+    border: none;
+    border-radius: var(--shopify-radius);
+    background-color: var(--shopify-light);
+    color: var(--shopify-text);
+    font-size: 1rem;
+    transition: var(--shopify-transition);
+}
+
+.shopify-search__input:focus {
+    outline: none;
+    background-color: #fff;
+    box-shadow: inset 0 0 0 2px var(--shopify-primary);
+}
+
+.shopify-search__close {
+    background: none;
+    border: none;
+    margin-right: 1rem;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--shopify-text);
+    font-size: 1.25rem;
+    border-radius: 50%;
+    transition: var(--shopify-transition);
+}
+
+.shopify-search__close:hover {
+    background-color: var(--shopify-light);
+    color: var(--shopify-text-light);
+}
+
+/* ===== القائمة المتحركة للموبايل ===== */
+.shopify-mobile-menu-toggle {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: var(--shopify-primary);
+    color: #fff;
+    border: none;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shopify-shadow-hover);
+    z-index: 90;
+    transition: var(--shopify-transition);
+}
+
+.shopify-mobile-menu-toggle:hover {
+    background-color: var(--shopify-primary-hover);
+    transform: scale(1.05);
+}
+
+.shopify-mobile-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    max-width: 350px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.shopify-mobile-menu.active {
+    transform: translateX(0);
+}
+
+.shopify-mobile-menu__header {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--shopify-border);
+}
+
+.shopify-mobile-menu__close {
+    background: none;
+    border: none;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--shopify-text);
+    font-size: 1.25rem;
+    border-radius: 50%;
+    margin-left: 0.5rem;
+    transition: var(--shopify-transition);
+}
+
+.shopify-mobile-menu__close:hover {
+    background-color: var(--shopify-light);
+}
+
+.shopify-mobile-menu__logo {
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--shopify-dark);
+}
+
+.shopify-mobile-menu__logo i {
+    margin-left: 0.5rem;
+    color: var(--shopify-primary);
+    font-size: 1.5rem;
+}
+
+.shopify-mobile-menu__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem 0;
+}
+
+.shopify-mobile-menu__nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.shopify-mobile-menu__item {
+    border-bottom: 1px solid var(--shopify-border);
+}
+
+.shopify-mobile-menu__item-header {
+    display: flex;
+    align-items: center;
+}
+
+.shopify-mobile-menu__link {
+    flex: 1;
+    display: block;
+    padding: 1rem;
+    color: var(--shopify-text);
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--shopify-transition);
+}
+
+.shopify-mobile-menu__toggle {
+    background: none;
+    border: none;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--shopify-text-light);
+    font-size: 1rem;
+    transition: var(--shopify-transition);
+}
+
+.shopify-mobile-menu__toggle.active i {
+    transform: rotate(180deg);
+}
+
+.shopify-mobile-menu__subnav {
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0.5rem 1rem;
+    background-color: var(--shopify-light);
+}
+
+.shopify-mobile-menu__item--has-children.active .shopify-mobile-menu__subnav {
+    display: block;
+}
+
+.shopify-mobile-menu__sublink {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: var(--shopify-text);
+    text-decoration: none;
+    font-size: 0.9375rem;
+    transition: var(--shopify-transition);
+}
+
+.shopify-mobile-menu__divider {
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    color: var(--shopify-text-light);
+    font-size: 0.8125rem;
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.shopify-mobile-menu__footer {
+    padding: 1rem;
+    border-top: 1px solid var(--shopify-border);
+}
+
+.shopify-mobile-menu__user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.shopify-mobile-menu__user i {
+    font-size: 2rem;
+    margin-left: 0.75rem;
+    color: var(--shopify-text-light);
+}
+
+.shopify-mobile-menu__username {
+    font-weight: 600;
+    font-size: 0.9375rem;
+    margin-bottom: 0.25rem;
+}
+
+.shopify-mobile-menu__email {
+    font-size: 0.8125rem;
+    color: var(--shopify-text-light);
+}
+
+.shopify-mobile-menu__actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.shopify-mobile-menu__action-btn {
+    flex: 1;
+    display: inline-block;
+    padding: 0.75rem;
+    text-align: center;
+    background-color: var(--shopify-light);
+    color: var(--shopify-text);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9375rem;
+    border-radius: var(--shopify-radius);
+    transition: var(--shopify-transition);
+}
+
+.shopify-mobile-menu__action-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.shopify-mobile-menu__action-btn--logout:hover {
+    color: #d72c0d;
+}
+
+.shopify-mobile-menu__auth {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.shopify-mobile-menu__auth-btn {
+    display: block;
+    padding: 0.75rem;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9375rem;
+    border-radius: var(--shopify-radius);
+    transition: var(--shopify-transition);
+}
+
+.shopify-mobile-menu__auth-btn--login {
+    background-color: var(--shopify-light);
+    color: var(--shopify-text);
+}
+
+.shopify-mobile-menu__auth-btn--register {
+    background-color: var(--shopify-primary);
+    color: #fff;
+}
+
+.shopify-mobile-menu__auth-btn--login:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.shopify-mobile-menu__auth-btn--register:hover {
+    background-color: var(--shopify-primary-hover);
+}
+
+/* ===== تعديلات لتكيف مع مختلف الشاشات ===== */
+@media (max-width: 991.98px) {
+    .shopify-nav {
+        display: none;
+    }
+    
+    .shopify-header__main {
+        justify-content: space-between;
+    }
+    
+    .shopify-logo {
+        margin-left: 0;
+    }
+    
+    .shopify-header__actions {
+        margin-right: 0;
+    }
+}
+
+@media (min-width: 992px) {
+    .shopify-mobile-menu-toggle {
+        display: none;
+    }
+}

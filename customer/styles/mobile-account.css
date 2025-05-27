@@ -1,0 +1,179 @@
+/**
+ * تنسيقات قائمة الحساب للأجهزة المحمولة
+ * تصميم متوافق مع الأجهزة المحمولة لقائمة حساب المستخدم
+ */
+
+/* قائمة الحساب للأجهزة المحمولة */
+.mobile-account-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2000;
+    display: none;
+}
+
+.mobile-account-menu.show {
+    display: block;
+}
+
+.mobile-account-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.mobile-account-content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 85%;
+    max-width: 320px;
+    background-color: var(--dark);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
+    animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.mobile-account-header {
+    padding: 20px;
+    background-color: var(--dark-lighter);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-dark);
+}
+
+.mobile-account-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.mobile-account-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.mobile-account-info h6 {
+    font-size: 16px;
+    margin: 0 0 4px;
+    color: var(--text-white);
+    font-weight: 600;
+}
+
+.mobile-account-info p {
+    font-size: 14px;
+    margin: 0;
+    color: var(--text-light);
+}
+
+.mobile-account-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-account-close:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.mobile-account-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px 0;
+}
+
+.mobile-account-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 20px;
+    color: var(--text-white);
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-account-item:active {
+    background-color: var(--dark-lighter);
+}
+
+.mobile-account-item i {
+    font-size: 20px;
+    color: var(--text-light);
+    width: 24px;
+    text-align: center;
+}
+
+.mobile-account-item span {
+    font-size: 16px;
+}
+
+.mobile-account-divider {
+    height: 1px;
+    background-color: var(--border-dark);
+    margin: 10px 0;
+}
+
+.mobile-account-logout {
+    color: #ff6b6b;
+}
+
+.mobile-account-logout i {
+    color: #ff6b6b;
+}
+
+/* تحسينات للأجهزة الصغيرة */
+@media (max-width: 375px) {
+    .mobile-account-content {
+        width: 100%;
+        max-width: none;
+    }
+    
+    .mobile-account-avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+    
+    .mobile-account-info h6 {
+        font-size: 14px;
+    }
+    
+    .mobile-account-info p {
+        font-size: 12px;
+    }
+}

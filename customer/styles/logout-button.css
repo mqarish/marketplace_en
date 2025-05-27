@@ -1,0 +1,90 @@
+/**
+ * تنسيقات القائمة المنسدلة وزر تسجيل الخروج
+ */
+
+/* تنسيقات زر الحساب على سطح المكتب */
+#desktopAccountBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+#desktopAccountBtn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+#desktopAccountBtn i.bi-chevron-down {
+    font-size: 12px;
+    margin-right: 0;
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+}
+
+/* تدوير السهم عند فتح القائمة */
+#desktopAccountMenu.show + #desktopAccountBtn i.bi-chevron-down {
+    transform: rotate(180deg);
+}
+
+/* تنسيقات القائمة المنسدلة */
+#desktopAccountMenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-width: 240px;
+    background-color: var(--dark-light);
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    margin-top: 10px;
+    border: 1px solid var(--border-dark);
+    overflow: hidden;
+}
+
+#desktopAccountMenu.show {
+    display: block;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* تنسيقات زر تسجيل الخروج */
+.logout-btn {
+    background-color: rgba(255, 0, 0, 0.1);
+    margin-right: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+    background-color: rgba(255, 0, 0, 0.2);
+}
+
+.logout-btn i {
+    color: #ff6b6b;
+}
+
+/* تنسيقات عنصر تسجيل الخروج في القائمة */
+.logout-item {
+    color: #ff6b6b !important;
+}
+
+.logout-item i {
+    color: #ff6b6b !important;
+}
+
+/* تنسيقات إضافية للأجهزة المحمولة */
+@media (max-width: 768px) {
+    .mobile-account-logout {
+        color: #ff6b6b;
+    }
+    
+    .mobile-account-logout i {
+        color: #ff6b6b;
+    }
+}

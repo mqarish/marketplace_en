@@ -1,0 +1,244 @@
+/**
+ * تحسينات التوافق مع الأجهزة المحمولة لصفحات العميل
+ * يحتوي على إصلاحات وتحسينات لعرض الصفحات بشكل صحيح على جميع أحجام الشاشات
+ */
+
+/* ===== تحسينات عامة للأجهزة المحمولة ===== */
+@media (max-width: 768px) {
+    /* تحسين حجم الخط والعناصر */
+    body {
+        font-size: 14px;
+    }
+    
+    h1, .h1 {
+        font-size: 1.8rem;
+    }
+    
+    h2, .h2 {
+        font-size: 1.5rem;
+    }
+    
+    h3, .h3 {
+        font-size: 1.3rem;
+    }
+    
+    .section-title {
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+    }
+    
+    /* تحسين المسافات */
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    .py-5 {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+    }
+    
+    .py-4 {
+        padding-top: 1.5rem !important;
+        padding-bottom: 1.5rem !important;
+    }
+    
+    /* تحسين أزرار التصفية */
+    .filter-sidebar {
+        margin-bottom: 1.5rem;
+        padding: 15px;
+    }
+    
+    .filter-title {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+    
+    /* تحسين عرض المنتجات */
+    .product-card {
+        margin-bottom: 15px;
+    }
+    
+    .product-card .card-body {
+        padding: 10px;
+    }
+    
+    .product-card .card-title {
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .product-card-image {
+        height: 160px;
+    }
+    
+    /* تحسين عرض المتاجر */
+    .store-card {
+        margin-bottom: 15px;
+    }
+    
+    .store-logo {
+        width: 60px;
+        height: 60px;
+    }
+    
+    /* تحسين أزرار التنقل بين الصفحات */
+    .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .page-link {
+        padding: 0.4rem 0.75rem;
+    }
+}
+
+/* ===== تحسينات للأجهزة الصغيرة جداً ===== */
+@media (max-width: 576px) {
+    /* تحسين عرض المنتجات */
+    .product-list-item .card-body {
+        padding: 10px;
+    }
+    
+    .product-list-item .card-title {
+        font-size: 0.9rem;
+    }
+    
+    /* تحسين عرض الأزرار */
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+    }
+    
+    /* تحسين عرض الفلاتر */
+    .filter-options {
+        flex-direction: column;
+    }
+    
+    .filter-options .form-select,
+    .filter-options .form-control {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+    
+    /* تحسين عرض صفحة تفاصيل المنتج */
+    .product-details-container {
+        padding: 10px;
+    }
+    
+    .product-gallery {
+        margin-bottom: 1rem;
+    }
+    
+    /* تحسين عرض صفحة المتجر */
+    .store-header {
+        padding: 15px;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .store-info {
+        margin-top: 1rem;
+        width: 100%;
+    }
+}
+
+/* ===== تحسينات خاصة بصفحات محددة ===== */
+
+/* صفحة المنتجات */
+@media (max-width: 768px) {
+    .view-options {
+        margin-bottom: 1rem;
+    }
+    
+    #products-list .product-list-item {
+        margin-bottom: 1rem;
+    }
+    
+    .product-list-item .col-md-3 {
+        height: 150px;
+        overflow: hidden;
+    }
+}
+
+/* صفحة المتاجر */
+@media (max-width: 768px) {
+    .store-card .store-details {
+        padding: 10px;
+    }
+    
+    .store-card .store-stats {
+        flex-wrap: wrap;
+    }
+    
+    .store-card .stat-item {
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* صفحة العروض */
+@media (max-width: 768px) {
+    .offer-card {
+        margin-bottom: 1rem;
+    }
+    
+    .offer-card .offer-badge {
+        font-size: 0.9rem;
+        padding: 0.3rem 0.6rem;
+    }
+}
+
+/* صفحة الأكثر تقييماً والأكثر إعجاباً */
+@media (max-width: 768px) {
+    .rating-filter {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .rating-filter .form-select {
+        margin-top: 0.5rem;
+        width: 100%;
+    }
+}
+
+/* تحسينات إضافية لتجربة المستخدم */
+@media (max-width: 768px) {
+    /* تحسين الأزرار العائمة */
+    .floating-action-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    
+    /* تحسين المودالات */
+    .modal-dialog {
+        margin: 0.5rem;
+    }
+    
+    .modal-header {
+        padding: 0.75rem;
+    }
+    
+    .modal-body {
+        padding: 1rem;
+    }
+    
+    /* تحسين التنبيهات */
+    .alert {
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+    }
+    
+    /* تحسين النماذج */
+    .form-label {
+        margin-bottom: 0.25rem;
+    }
+    
+    .form-control, .form-select {
+        padding: 0.375rem 0.5rem;
+        font-size: 0.9rem;
+    }
+}

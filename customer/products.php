@@ -1,0 +1,1037 @@
+<?php
+/**
+ * Products Page - Display all products with filtering options
+ */
+
+session_start();
+
+// Include required files
+require_once '../includes/init.php';
+require_once '../includes/functions.php';
+
+// Get search and filter criteria
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$category_id = isset($_GET['category']) ? (int)$_GET['category'] : '';
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$items_per_page = 20; // Number of products per page
+$offset = ($page - 1) * $items_per_page;
+
+// ===== Fetch Categories =====
+$categories_sql = "SELECT DISTINCT pc.* FROM product_categories pc
+                  INNER JOIN products p ON p.category_id = pc.id
+                  WHERE p.status = 'active'
+                  ORDER BY pc.name";
+$categories_result = $conn->query($categories_sql);
+
+// ===== Products Query with Offers =====
+$products_sql = "SELECT 
+    p.*, 
+    s.name as store_name, 
+    s.address as store_address, 
+    s.city as store_city,
+    pc.name as category_name,
+    o.id as offer_id, 
+    o.discount_percentage,
+    CASE 
+        WHEN o.id IS NOT NULL 
+        AND o.status = 'active'
+        AND o.start_date <= CURRENT_DATE()
+        AND o.end_date >= CURRENT_DATE()
+        THEN ROUND(p.price - (p.price * o.discount_percentage / 100), 2)
+        ELSE p.price 
+    END as final_price
+FROM 
+    products p
+    INNER JOIN stores s ON p.store_id = s.id
+    LEFT JOIN product_categories pc ON p.category_id = pc.id
+    LEFT JOIN offer_items oi ON p.id = oi.product_id
+    LEFT JOIN offers o ON oi.offer_id = o.id 
+        AND o.store_id = p.store_id 
+        AND o.status = 'active'
+        AND o.start_date <= CURRENT_DATE()
+        AND o.end_date >= CURRENT_DATE()
+WHERE 
+    p.status = 'active' 
+    AND s.status = 'active'";
+
+// Add search conditions if they exist
+if (!empty($search)) {
+    $search_term = '%' . $search . '%';
+    $products_sql .= " AND (p.name LIKE ? OR p.description LIKE ? OR s.name LIKE ? OR pc.name LIKE ?)";
+}
+
+// Add category conditions if they exist
+if (!empty($category_id)) {
+    // To ensure the ID is a number
+    $category_id = (int)$category_id;
+    $products_sql .= " AND p.category_id = ?";
+    
+    // Log the used ID for debugging
+    error_log("Filtering by category ID: " . $category_id);
+}
+
+// Query to calculate the total number of products (for pagination)
+$count_sql = str_replace("SELECT 
+    p.*, 
+    s.name as store_name, 
+    s.address as store_address, 
+    s.city as store_city,
+    pc.name as category_name,
+    o.id as offer_id, 
+    o.discount_percentage,
+    CASE 
+        WHEN o.id IS NOT NULL 
+        AND o.status = 'active'
+        AND o.start_date <= CURRENT_DATE()
+        AND o.end_date >= CURRENT_DATE()
+        THEN ROUND(p.price - (p.price * o.discount_percentage / 100), 2)
+        ELSE p.price 
+    END as final_price", "SELECT COUNT(DISTINCT p.id) as total", $products_sql);
+
+// Sort the results
+$sort = isset($_GET['sort']) ? $_GET['sort'] : 'default';
+
+$products_sql .= " GROUP BY p.id ORDER BY ";
+
+// Sort according to selection
+switch ($sort) {
+    case 'price_asc':
+        $products_sql .= "final_price ASC";
+        break;
+    case 'price_desc':
+        $products_sql .= "final_price DESC";
+        break;
+    default:
+        $products_sql .= "CASE 
+            WHEN o.id IS NOT NULL 
+            AND o.status = 'active'
+            AND o.start_date <= CURRENT_DATE()
+            AND o.end_date >= CURRENT_DATE()
+            THEN 0 
+            ELSE 1 
+        END, 
+        p.created_at DESC";
+        break;
+}
+
+// Add pagination
+$products_sql .= " LIMIT ? OFFSET ?";
+
+// Prepare and execute the total count query
+$count_stmt = $conn->prepare($count_sql);
+
+if (!empty($search)) {
+    if (!empty($category_id)) {
+        $count_stmt->bind_param("ssssi", $search_term, $search_term, $search_term, $search_term, $category_id);
+        error_log("Count query with search and category: " . $count_sql . " [Category ID: " . $category_id . ", Search: " . $search . "]");
+    } else {
+        $count_stmt->bind_param("ssss", $search_term, $search_term, $search_term, $search_term);
+        error_log("Count query with search only: " . $count_sql . " [Search: " . $search . "]");
+    }
+} elseif (!empty($category_id)) {
+    $count_stmt->bind_param("i", $category_id);
+    error_log("Count query with category only: " . $count_sql . " [Category ID: " . $category_id . "]");
+}
+
+$count_stmt->execute();
+$total_result = $count_stmt->get_result();
+$total_row = $total_result->fetch_assoc();
+$total_products = $total_row['total'];
+$total_pages = ceil($total_products / $items_per_page);
+
+// Prepare and execute the products query
+$stmt = $conn->prepare($products_sql);
+
+if (!empty($search)) {
+    if (!empty($category_id)) {
+        $stmt->bind_param("ssssiii", $search_term, $search_term, $search_term, $search_term, $category_id, $items_per_page, $offset);
+        error_log("Products query with search and category: " . $products_sql . " [Category ID: " . $category_id . ", Search: " . $search . "]");
+    } else {
+        $stmt->bind_param("ssssii", $search_term, $search_term, $search_term, $search_term, $items_per_page, $offset);
+        error_log("Products query with search only: " . $products_sql . " [Search: " . $search . "]");
+    }
+} elseif (!empty($category_id)) {
+    $stmt->bind_param("iii", $category_id, $items_per_page, $offset);
+    error_log("Products query with category only: " . $products_sql . " [Category ID: " . $category_id . "]");
+} else {
+    $stmt->bind_param("ii", $items_per_page, $offset);
+    error_log("Products query without filters: " . $products_sql);
+}
+
+$stmt->execute();
+$products_result = $stmt->get_result();
+
+// Set page title
+$page_title = "Products";
+if (!empty($category_id) && $categories_result) {
+    $categories_result->data_seek(0);
+    while ($cat = $categories_result->fetch_assoc()) {
+        if ($cat['id'] == $category_id) {
+            $page_title .= " - " . $cat['name'];
+            break;
+        }
+    }
+}
+if (!empty($search)) {
+    $page_title .= " - Search Results: " . $search;
+}
+?>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Browse thousands of products from various stores in the E-Marketplace">
+    <title><?php echo $page_title; ?> | E-Marketplace</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles/marketplace-modern.css">
+    <style>
+        .filter-sidebar {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .filter-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .filter-group {
+            margin-bottom: 20px;
+        }
+        
+        .filter-group-title {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: #555;
+        }
+        
+        .category-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .category-item {
+            margin-bottom: 8px;
+        }
+        
+        .category-link {
+            color: #666;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Vertical list display styling */
+        .product-list-item {
+            transition: all 0.3s ease;
+            border: 1px solid #eee;
+            overflow: hidden;
+        }
+        
+        .product-list-item:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .product-list-item .img-fluid {
+            height: 100%;
+            object-fit: cover;
+            min-height: 200px;
+        }
+        
+        .dropdown-item.active {
+            background-color: #ff7a00;
+            color: white;
+        }
+        
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
+        }
+        
+        .category-link:hover {
+            color: #ff7a00;
+        }
+        
+        /* Vertical list display styling */
+        .product-list-item {
+            transition: all 0.3s ease;
+            border: 1px solid #eee;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .product-list-item:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .product-list-item .img-fluid {
+            height: 100%;
+            object-fit: cover;
+            min-height: 200px;
+        }
+        
+        .dropdown-item.active {
+            background-color: #ff7a00;
+            color: white;
+        }
+        
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .category-link.active {
+            color: #ff7a00;
+            font-weight: 500;
+        }
+        
+        .category-link i {
+            margin-left: 8px;
+            font-size: 0.8rem;
+        }
+        
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .product-card-image {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-card-image .carousel-control-prev,
+        .product-card-image .carousel-control-next {
+            width: 30px;
+            height: 30px;
+            background-color: rgba(255, 122, 0, 0.7);
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+        
+        .product-card:hover .carousel-control-prev,
+        .product-card:hover .carousel-control-next {
+            opacity: 1;
+        }
+        
+        .product-card-image .carousel-control-prev {
+            right: 5px;
+            left: auto;
+        }
+        
+        .product-card-image .carousel-control-next {
+            left: 5px;
+            right: auto;
+        }
+        
+        .product-card-image .carousel-control-prev-icon,
+        .product-card-image .carousel-control-next-icon {
+            width: 15px;
+            height: 15px;
+            background-size: 100%;
+            display: inline-block;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 16 16'%3e%3cpath d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+        }
+        
+        .product-card-image .carousel-control-next-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 16 16'%3e%3cpath d='M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z'/%3e%3c/svg%3e");
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+        {
+            right: 10px;
+            z-index: 2;
+        }
+        
+        .original-price {
+            text-decoration: line-through;
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+        
+        .view-options {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .view-options .btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+        
+        .view-options .btn.active {
+            background-color: #ff7a00;
+            color: white;
+            border-color: #ff7a00;
+        }
+    </style>
+</head>
+<body>
+    <!-- Include the new dark header -->
+    <?php 
+    $root_path = '../';
+    include '../includes/dark_header.php'; 
+    ?>
+
+    <div class="container py-5">
+        <div class="row">
+            <!-- Sidebar Filters -->
+            <div class="col-lg-3 mb-4">
+                <div class="filter-sidebar">
+                    <h3 class="filter-title">Filter Products</h3>
+                    
+                    <!-- Search -->
+                    <div class="filter-group">
+                        <form action="" method="GET">
+                            <?php if (!empty($category_id)): ?>
+                                <input type="hidden" name="category" value="<?php echo $category_id; ?>">
+                            <?php endif; ?>
+                            <div class="input-group mb-3">
+                                <input type="text" name="search" class="form-control" placeholder="Search for products..." value="<?php echo htmlspecialchars($search); ?>">
+                                <button class="btn btn-outline-secondary" type="submit">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Categories -->
+                    <div class="filter-group">
+                        <h4 class="filter-group-title">Categories</h4>
+                        <ul class="category-list">
+                            <li class="category-item">
+                                <a href="products.php<?php echo !empty($search) ? '?search=' . urlencode($search) : ''; ?>" class="category-link <?php echo empty($category_id) ? 'active' : ''; ?>">
+                                    <i class="bi bi-grid"></i> All Products
+                                </a>
+                            </li>
+                            <?php 
+                            if ($categories_result && $categories_result->num_rows > 0) {
+                                $categories_result->data_seek(0);
+                                while ($category = $categories_result->fetch_assoc()): 
+                            ?>
+                                <li class="category-item">
+                                    <a href="products.php?category=<?php echo $category['id']; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?>" class="category-link <?php echo $category_id == $category['id'] ? 'active' : ''; ?>">
+                                        <i class="bi bi-tag"></i> <?php echo htmlspecialchars($category['name']); ?>
+                                    </a>
+                                </li>
+                            <?php 
+                                endwhile;
+                            }
+                            ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Products -->
+            <div class="col-lg-9">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="section-title">
+                        <?php echo $page_title; ?>
+                        <span class="badge bg-secondary ms-2"><?php echo $total_products; ?> products</span>
+                    </h2>
+                    
+                    <div class="d-flex align-items-center">
+                        <!-- Sorting Options -->
+                        <div class="dropdown me-3">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-sort-down"></i> Sort
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                                <li>
+                                    <a class="dropdown-item <?php echo ($sort == 'default' || !isset($_GET['sort'])) ? 'active' : ''; ?>" 
+                                       href="?<?php echo http_build_query(array_merge($_GET, ['sort' => 'default'])); ?>">
+                                       <i class="bi bi-lightning"></i> Offers & Latest
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item <?php echo ($sort == 'price_asc') ? 'active' : ''; ?>" 
+                                       href="?<?php echo http_build_query(array_merge($_GET, ['sort' => 'price_asc'])); ?>">
+                                       <i class="bi bi-arrow-up"></i> Price: Low to High
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item <?php echo ($sort == 'price_desc') ? 'active' : ''; ?>" 
+                                       href="?<?php echo http_build_query(array_merge($_GET, ['sort' => 'price_desc'])); ?>">
+                                       <i class="bi bi-arrow-down"></i> Price: High to Low
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <!-- View Options -->
+                        <div class="view-options">
+                            <button class="btn btn-outline-secondary" id="grid-view">
+                                <i class="bi bi-grid"></i>
+                            </button>
+                            <button class="btn btn-outline-secondary active" id="list-view">
+                                <i class="bi bi-list"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <?php 
+// To ensure there are results
+$results_count = ($products_result) ? $products_result->num_rows : 0;
+error_log("Number of products found: " . $results_count . " for category ID: " . $category_id);
+
+if ($products_result && $products_result->num_rows > 0): 
+?>
+                    <!-- Display products in grid view -->
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="products-grid" style="display: none;">
+                        <?php while ($product = $products_result->fetch_assoc()): ?>
+                            <div class="col mb-4">
+                                <div class="card h-100 product-card">
+                                    <a href="product-details.php?id=<?php echo $product['id']; ?>" class="product-link">
+                                        <?php if (!empty($product['offer_id'])): ?>
+                                            <div class="offer-badge">
+                                                <span class="badge bg-danger">
+                                                    <?php echo $product['discount_percentage']; ?>% OFF
+                                                </span>
+                                            </div>
+                                        <?php endif; ?>
+                                        
+                                        <?php 
+                                            // جلب صور المنتج من جدول product_images
+                                            $product_id = $product['id'];
+                                            $images_sql = "SELECT * FROM product_images WHERE product_id = ? ORDER BY display_order ASC LIMIT 5";
+                                            $images_stmt = $conn->prepare($images_sql);
+                                            $has_multiple_images = false;
+                                            $product_images = [];
+                                            
+                                            if ($images_stmt) {
+                                                $images_stmt->bind_param("i", $product_id);
+                                                $images_stmt->execute();
+                                                $images_result = $images_stmt->get_result();
+                                                $has_multiple_images = ($images_result->num_rows > 1);
+                                                
+                                                while ($image = $images_result->fetch_assoc()) {
+                                                    $product_images[] = $image;
+                                                }
+                                            }
+                                            
+                                            if (count($product_images) > 0): 
+                                            // Display carousel for multiple images
+                                        ?>
+                                            <!-- Image container with carousel -->
+                                            <div class="product-card-image">
+                                                <div id="productCarousel-<?php echo $product['id']; ?>" class="carousel slide" data-bs-ride="false">
+                                                    <div class="carousel-inner">
+                                                        <?php foreach ($product_images as $index => $image): ?>
+                                                            <div class="carousel-item <?php echo ($index === 0) ? 'active' : ''; ?>">
+                                                                <img src="../<?php echo htmlspecialchars($image['image_url']); ?>" 
+                                                                    class="card-img-top" alt="<?php echo htmlspecialchars($product['name']); ?>"
+                                                                    onerror="this.src='../assets/images/default-product.jpg';">
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                    </div>
+                                                    
+                                                    <?php if (count($product_images) > 1): ?>
+                                                    <!-- Navigation buttons -->
+                                                    <button class="carousel-control-prev" type="button" 
+                                                            data-bs-target="#productCarousel-<?php echo $product['id']; ?>" data-bs-slide="prev"
+                                                            onclick="event.preventDefault(); event.stopPropagation();">
+                                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                        <span class="visually-hidden">السابق</span>
+                                                    </button>
+                                                    <button class="carousel-control-next" type="button" 
+                                                            data-bs-target="#productCarousel-<?php echo $product['id']; ?>" data-bs-slide="next"
+                                                            onclick="event.preventDefault(); event.stopPropagation();">
+                                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                        <span class="visually-hidden">التالي</span>
+                                                    </button>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
+                                        <?php elseif (!empty($product['image_url'])): ?>
+                                            <!-- Single image container -->
+                                            <div class="product-card-image">
+                                                <img src="../<?php echo htmlspecialchars($product['image_url']); ?>" 
+                                                    class="card-img-top" alt="<?php echo htmlspecialchars($product['name']); ?>"
+                                                    onerror="this.src='../assets/images/default-product.jpg';">
+                                            </div>
+                                        <?php else: ?>
+                                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-image text-secondary" style="font-size: 4rem;"></i>
+                                            </div>
+                                        <?php endif; ?>
+                                    </a>
+                                    
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-2">
+                                            <a href="product-details.php?id=<?php echo $product['id']; ?>" class="text-decoration-none text-dark">
+                                                <?php echo htmlspecialchars($product['name']); ?>
+                                            </a>
+                                        </h5>
+                                        
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <a href="store-page.php?id=<?php echo $product['store_id']; ?>" class="text-decoration-none text-muted small">
+                                                <i class="bi bi-shop ms-1"></i> <?php echo htmlspecialchars($product['store_name']); ?>
+                                            </a>
+                                            
+                                            <?php if (!empty($product['category_name'])): ?>
+                                                <span class="badge bg-light text-secondary small">
+                                                    <?php echo htmlspecialchars($product['category_name']); ?>
+                                                </span>
+                                            <?php endif; ?>
+                                        </div>
+                                        
+                                        <div class="product-price mb-3">
+                                            <?php if (isset($product['hide_price']) && $product['hide_price'] == 1): ?>
+                                                <span class="fw-bold text-primary">
+                                                    <i class="bi bi-telephone-fill me-1"></i> Call for Price
+                                                </span>
+                                            <?php elseif (!empty($product['offer_id'])): ?>
+                                                <span class="fw-bold text-danger">
+                                                    <?php echo number_format($product['final_price'], 2); ?>
+                                                    <?php 
+                                                    // Display appropriate currency
+                                                    if (isset($product['currency'])) {
+                                                        switch ($product['currency']) {
+                                                            case 'SAR':
+                                                                echo ' SAR';
+                                                                break;
+                                                            case 'YER':
+                                                                echo ' YER';
+                                                                break;
+                                                            case 'USD':
+                                                                echo ' $';
+                                                                break;
+                                                            default:
+                                                                echo ' SAR';
+                                                        }
+                                                    } else {
+                                                        echo ' SAR';
+                                                    }
+                                                    ?>
+                                                </span>
+                                                <span class="original-price d-block">
+                                                    <?php echo number_format($product['price'], 2); ?>
+                                                    <?php 
+                                                    // Display appropriate currency
+                                                    if (isset($product['currency'])) {
+                                                        switch ($product['currency']) {
+                                                            case 'SAR':
+                                                                echo ' SAR';
+                                                                break;
+                                                            case 'YER':
+                                                                echo ' YER';
+                                                                break;
+                                                            case 'USD':
+                                                                echo ' $';
+                                                                break;
+                                                            default:
+                                                                echo ' SAR';
+                                                        }
+                                                    } else {
+                                                        echo ' SAR';
+                                                    }
+                                                    ?>
+                                                </span>
+                                            <?php else: ?>
+                                                <span class="fw-bold">
+                                                    <?php echo number_format($product['price'], 2); ?>
+                                                    <?php 
+                                                    // Display appropriate currency
+                                                    if (isset($product['currency'])) {
+                                                        switch ($product['currency']) {
+                                                            case 'SAR':
+                                                                echo ' SAR';
+                                                                break;
+                                                            case 'YER':
+                                                                echo ' YER';
+                                                                break;
+                                                            case 'USD':
+                                                                echo ' $';
+                                                                break;
+                                                            default:
+                                                                echo ' SAR';
+                                                        }
+                                                    } else {
+                                                        echo ' SAR';
+                                                    }
+                                                    ?>
+                                                </span>
+                                            <?php endif; ?>
+                                        </div>
+                                        
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <a href="product-details.php?id=<?php echo $product['id']; ?>" class="btn btn-sm" style="background-color: #ff7a00; color: white;">
+                                                <i class="bi bi-eye me-1"></i> عرض التفاصيل
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endwhile; ?>
+                    </div>
+                    
+                    <!-- عرض المنتجات بشكل قائمة عمودية -->
+                    <div class="product-list" id="products-list">
+                        <?php 
+                        // إعادة مؤشر نتائج المنتجات إلى البداية
+                        if ($products_result) {
+                            $products_result->data_seek(0);
+                            while ($product = $products_result->fetch_assoc()): 
+                        ?>
+                            <div class="card mb-3 product-list-item">
+                                <div class="row g-0">
+                                    <!-- صورة المنتج -->
+                                    <div class="col-md-3 position-relative">
+                                        <?php if (!empty($product['offer_id'])): ?>
+                                            <div class="offer-badge">
+                                                <span class="badge bg-danger">
+                                                    <?php echo $product['discount_percentage']; ?>% OFF
+                                                </span>
+                                            </div>
+                                        <?php endif; ?>
+                                        
+                                        <a href="product-details.php?id=<?php echo $product['id']; ?>" class="product-link">
+                                            <?php 
+                                            // جلب صور المنتج من جدول product_images
+                                            $product_id = $product['id'];
+                                            $images_sql = "SELECT * FROM product_images WHERE product_id = ? ORDER BY display_order ASC LIMIT 3";
+                                            $images_stmt = $conn->prepare($images_sql);
+                                            $has_multiple_images = false;
+                                            $product_images = [];
+                                            
+                                            if ($images_stmt) {
+                                                $images_stmt->bind_param("i", $product_id);
+                                                $images_stmt->execute();
+                                                $images_result = $images_stmt->get_result();
+                                                $has_multiple_images = ($images_result->num_rows > 1);
+                                                
+                                                while ($image = $images_result->fetch_assoc()) {
+                                                    $product_images[] = $image;
+                                                }
+                                            }
+                                            
+                                            if ($has_multiple_images): 
+                                            // عرض كاروسيل بسيط للصور المتعددة
+                                            ?>
+                                                <div id="productCarousel<?php echo $product_id; ?>" class="carousel slide" data-bs-ride="false">
+                                                    <div class="carousel-inner">
+                                                        <?php foreach ($product_images as $index => $image): ?>
+                                                            <div class="carousel-item <?php echo ($index === 0) ? 'active' : ''; ?>">
+                                                                <img src="../<?php echo htmlspecialchars($image['image_url']); ?>" 
+                                                                     class="img-fluid rounded-start h-100 object-fit-cover" 
+                                                                     alt="<?php echo htmlspecialchars($product['name']); ?>"
+                                                                     onerror="this.src='../assets/images/default-product.jpg';">
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                    </div>
+                                                    <?php if (count($product_images) > 1): ?>
+                                                    <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel<?php echo $product_id; ?>" data-bs-slide="prev">
+                                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                        <span class="visually-hidden">السابق</span>
+                                                    </button>
+                                                    <button class="carousel-control-next" type="button" data-bs-target="#productCarousel<?php echo $product_id; ?>" data-bs-slide="next">
+                                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                        <span class="visually-hidden">التالي</span>
+                                                    </button>
+                                                    <?php endif; ?>
+                                                </div>
+                                            <?php elseif (!empty($product['image_url'])): ?>
+                                                <img src="../<?php echo htmlspecialchars($product['image_url']); ?>" 
+                                                     class="img-fluid rounded-start h-100 object-fit-cover" 
+                                                     alt="<?php echo htmlspecialchars($product['name']); ?>"
+                                                     onerror="this.src='../assets/images/default-product.jpg';">
+                                            <?php else: ?>
+                                                <div class="d-flex align-items-center justify-content-center h-100 bg-light rounded-start">
+                                                    <i class="bi bi-box-seam text-secondary" style="font-size: 3rem;"></i>
+                                                </div>
+                                            <?php endif; ?>
+                                        </a>
+                                    </div>
+                                    
+                                    <!-- تفاصيل المنتج -->
+                                    <div class="col-md-9">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <h5 class="card-title">
+                                                    <a href="product-details.php?id=<?php echo $product['id']; ?>" class="text-decoration-none text-dark">
+                                                        <i class="bi bi-box me-2 text-primary"></i>
+                                                        <?php echo htmlspecialchars($product['name']); ?>
+                                                    </a>
+                                                </h5>
+                                                
+                                                <?php if (!empty($product['category_name'])): ?>
+                                                    <span class="badge bg-light text-secondary">
+                                                        <i class="bi bi-tag me-1"></i>
+                                                        <?php echo htmlspecialchars($product['category_name']); ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                            </div>
+                                            
+                                            <p class="card-text text-muted mb-2">
+                                                <?php 
+                                                // عرض جزء من الوصف
+                                                $description = !empty($product['description']) ? $product['description'] : 'لا يوجد وصف';
+                                                echo htmlspecialchars(mb_substr($description, 0, 100, 'UTF-8')) . (mb_strlen($description, 'UTF-8') > 100 ? '...' : '');
+                                                ?>
+                                            </p>
+                                            
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <a href="store-page.php?id=<?php echo $product['store_id']; ?>" class="text-decoration-none text-muted">
+                                                    <i class="bi bi-shop me-1"></i> <?php echo htmlspecialchars($product['store_name']); ?>
+                                                </a>
+                                                
+                                                <div class="product-price">
+                                                    <?php if (isset($product['hide_price']) && $product['hide_price'] == 1): ?>
+                                                        <span class="fw-bold text-primary">
+                                                            <i class="bi bi-telephone-fill me-1"></i> Call for Price
+                                                        </span>
+                                                    <?php elseif (!empty($product['offer_id'])): ?>
+                                                        <span class="fw-bold text-danger">
+                                                            <?php echo number_format($product['final_price'], 2); ?>
+                                                            <?php 
+                                                            // Display appropriate currency
+                                                            if (isset($product['currency'])) {
+                                                                switch ($product['currency']) {
+                                                                    case 'SAR':
+                                                                        echo ' SAR';
+                                                                        break;
+                                                                    case 'YER':
+                                                                        echo ' YER';
+                                                                        break;
+                                                                    case 'USD':
+                                                                        echo ' $';
+                                                                        break;
+                                                                    default:
+                                                                        echo ' SAR';
+                                                                }
+                                                            } else {
+                                                                echo ' SAR';
+                                                            }
+                                                            ?>
+                                                        </span>
+                                                        <span class="original-price ms-2">
+                                                            <?php echo number_format($product['price'], 2); ?>
+                                                            <?php 
+                                                            // Display appropriate currency
+                                                            if (isset($product['currency'])) {
+                                                                switch ($product['currency']) {
+                                                                    case 'SAR':
+                                                                        echo ' SAR';
+                                                                        break;
+                                                                    case 'YER':
+                                                                        echo ' YER';
+                                                                        break;
+                                                                    case 'USD':
+                                                                        echo ' $';
+                                                                        break;
+                                                                    default:
+                                                                        echo ' SAR';
+                                                                }
+                                                            } else {
+                                                                echo ' SAR';
+                                                            }
+                                                            ?>
+                                                        </span>
+                                                    <?php else: ?>
+                                                        <span class="fw-bold">
+                                                            <?php echo number_format($product['price'], 2); ?>
+                                                            <?php 
+                                                            // Display appropriate currency
+                                                            if (isset($product['currency'])) {
+                                                                switch ($product['currency']) {
+                                                                    case 'SAR':
+                                                                        echo ' SAR';
+                                                                        break;
+                                                                    case 'YER':
+                                                                        echo ' YER';
+                                                                        break;
+                                                                    case 'USD':
+                                                                        echo ' $';
+                                                                        break;
+                                                                    default:
+                                                                        echo ' SAR';
+                                                                }
+                                                            } else {
+                                                                echo ' SAR';
+                                                            }
+                                                            ?>
+                                                        </span>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="d-flex justify-content-end">
+                                                <a href="product-details.php?id=<?php echo $product['id']; ?>" class="btn btn-sm" style="background-color: #ff7a00; color: white;">
+                                                    <i class="bi bi-eye me-1"></i> عرض التفاصيل
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php 
+                            endwhile; 
+                        }
+                        ?>
+                    </div>
+                    
+                    <!-- ترقيم الصفحات -->
+                    <?php if ($total_pages > 1): ?>
+                        <nav aria-label="Page navigation" class="mt-4">
+                            <ul class="pagination justify-content-center">
+                                <?php if ($page > 1): ?>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page - 1])); ?>" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                <?php endif; ?>
+                                
+                                <?php 
+                                $start_page = max(1, $page - 2);
+                                $end_page = min($total_pages, $page + 2);
+                                
+                                if ($start_page > 1) {
+                                    echo '<li class="page-item"><a class="page-link" href="?' . http_build_query(array_merge($_GET, ['page' => 1])) . '">1</a></li>';
+                                    if ($start_page > 2) {
+                                        echo '<li class="page-item disabled"><a class="page-link" href="#">...</a></li>';
+                                    }
+                                }
+                                
+                                for ($i = $start_page; $i <= $end_page; $i++) {
+                                    echo '<li class="page-item ' . ($i == $page ? 'active' : '') . '"><a class="page-link" href="?' . http_build_query(array_merge($_GET, ['page' => $i])) . '">' . $i . '</a></li>';
+                                }
+                                
+                                if ($end_page < $total_pages) {
+                                    if ($end_page < $total_pages - 1) {
+                                        echo '<li class="page-item disabled"><a class="page-link" href="#">...</a></li>';
+                                    }
+                                    echo '<li class="page-item"><a class="page-link" href="?' . http_build_query(array_merge($_GET, ['page' => $total_pages])) . '">' . $total_pages . '</a></li>';
+                                }
+                                ?>
+                                
+                                <?php if ($page < $total_pages): ?>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page + 1])); ?>" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                <?php endif; ?>
+                            </ul>
+                        </nav>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <div class="alert alert-custom py-4 text-center">
+                        <i class="bi bi-exclamation-circle fs-1 d-block mb-3 text-muted"></i>
+                        <h4 class="alert-heading">لا توجد منتجات متاحة</h4>
+                        <p class="mb-0">لم يتم العثور على أي منتجات مطابقة لمعايير البحث الحالية.</p>
+                        <?php if (!empty($search) || !empty($category_id)): ?>
+                            <div class="mt-3">
+                                <a href="products.php" class="btn btn-outline-secondary">عرض جميع المنتجات</a>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+
+    <!-- تضمين مكتبات JavaScript اللازمة -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // التبديل بين عرض الشبكة وعرض القائمة
+            const gridViewBtn = document.getElementById('grid-view');
+            const listViewBtn = document.getElementById('list-view');
+            const productsGrid = document.getElementById('products-grid');
+            const productsList = document.getElementById('products-list');
+            
+            // تفعيل عرض الشبكة افتراضياً
+            if (gridViewBtn && listViewBtn && productsGrid && productsList) {
+                gridViewBtn.addEventListener('click', function() {
+                    gridViewBtn.classList.add('active');
+                    listViewBtn.classList.remove('active');
+                    productsGrid.style.display = 'flex';
+                    productsList.style.display = 'none';
+                    
+                    // حفظ التفضيل في localStorage
+                    localStorage.setItem('productsViewMode', 'grid');
+                });
+                
+                listViewBtn.addEventListener('click', function() {
+                    listViewBtn.classList.add('active');
+                    gridViewBtn.classList.remove('active');
+                    productsGrid.style.display = 'none';
+                    productsList.style.display = 'block';
+                    
+                    // حفظ التفضيل في localStorage
+                    localStorage.setItem('productsViewMode', 'list');
+                });
+                
+                // استعادة التفضيل المحفوظ
+                const savedViewMode = localStorage.getItem('productsViewMode') || 'grid';
+                if (savedViewMode === 'grid') {
+                    gridViewBtn.click();
+                } else {
+                    listViewBtn.click();
+                }
+            }
+            
+            // تمكين مؤشرات bootstrap
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+            
+            // تفعيل الكاروسيل
+            const carousels = document.querySelectorAll('.carousel');
+            carousels.forEach(carousel => {
+                const instance = new bootstrap.Carousel(carousel, {
+                    interval: false, // لا تقوم بالتدوير تلقائياً
+                    wrap: true
+                });
+                
+                // منع انتقال النقرة إلى صفحة المنتج عند النقر على أزرار الكاروسيل
+                const carouselButtons = carousel.querySelectorAll('.carousel-control-prev, .carousel-control-next');
+                carouselButtons.forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,492 @@
+/* أنماط خاصة بصفحة المتجر بتصميم احترافي مع إطار أسود */
+
+/* إعادة تعريف أنماط الصور في صفحة المتجر */
+.product-image {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+/* تنسيق رأس المتجر */
+.store-header {
+    background-color: #000000;
+    color: #ffffff;
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+    border-bottom: 3px solid #FF7A00;
+}
+
+/* صورة شعار المتجر */
+.store-logo {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #FF7A00;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    background-color: #fff;
+    padding: 3px;
+}
+
+/* معلومات المتجر */
+.store-info {
+    padding: 1rem;
+}
+
+.store-name {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+}
+
+.store-description {
+    color: #cccccc;
+    margin-bottom: 1rem;
+}
+
+/* إحصائيات المتجر */
+.store-stats {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+}
+
+.stat-item i {
+    color: #FF7A00;
+}
+
+/* شريط البحث المخصص للمتجر */
+.store-search-container {
+    margin: 1.5rem 0;
+    max-width: 600px;
+    padding: 0 5px;
+}
+
+.search-input-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-right: 10px;
+}
+
+.store-search-form {
+    display: flex;
+    height: 46px;
+    background-color: #1A1A1A;
+    border-radius: 9999px;
+    overflow: hidden;
+    border: 1px solid #333333;
+    transition: 0.25s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+    width: 100%;
+}
+
+.store-search-form:focus-within {
+    border-color: #FF7A00;
+    box-shadow: 0 0 0 2px rgba(255, 122, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.4);
+    background-color: #222;
+}
+
+.store-search-input {
+    flex: 1;
+    height: 100%;
+    background: transparent;
+    border: none;
+    padding: 0 20px;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+    font-family: inherit;
+}
+
+.store-search-input::placeholder {
+    color: #999999;
+}
+
+.store-search-btn {
+    min-width: 46px;
+    height: 46px;
+    background-color: #FF7A00;
+    color: #ffffff;
+    border: none;
+    border-radius: 0 9999px 9999px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: 0.15s ease;
+}
+
+.store-search-btn:hover {
+    background-color: #E56E00;
+}
+
+/* تحسين أنماط الكاروسيل */
+.product-card-image {
+    position: relative;
+    overflow: hidden;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    background-color: #f8f9fa;
+}
+
+/* تحسين أزرار التنقل */
+.carousel-control-prev,
+.carousel-control-next {
+    width: 35px;
+    height: 35px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    position: absolute;
+    opacity: 0;
+    transition: opacity 0.3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* موضع الزر السابق - الآن يصبح على اليمين */
+.carousel-control-prev {
+    right: 10px !important;
+    left: auto !important;
+}
+
+/* موضع الزر التالي - الآن يصبح على اليسار */
+.carousel-control-next {
+    left: 10px !important;
+    right: auto !important;
+}
+
+/* إظهار الأزرار عند المرور فوق الكاروسل */
+.card:hover .carousel-control-prev,
+.card:hover .carousel-control-next {
+    opacity: 1;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* تحسين أنماط البطاقات */
+.card {
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid #000000;
+    background-color: #fff;
+    margin-bottom: 1.5rem;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+/* نظام التقييم بالنجوم - تصميم جديد */
+.product-meta {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+    margin-bottom: 15px;
+    align-items: center;
+}
+
+.rating-pill, .likes-pill {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 0.9rem;
+    color: #212529;
+    background: #f8f9fa;
+    border: 1px solid #000000;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+    margin-right: 5px;
+}
+
+.rating-pill:hover, .likes-pill:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.rating-pill {
+    color: #212529;
+    font-weight: 500;
+}
+
+.likes-pill {
+    color: #212529;
+    font-weight: 500;
+}
+
+.rating-pill .value {
+    background: #ffc107;
+    color: #212529;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    margin-right: 8px;
+    font-weight: bold;
+}
+
+.stars-wrap {
+    display: flex;
+    color: #ffc107;
+    margin: 0 4px;
+    letter-spacing: -1px;
+}
+
+.meta-count {
+    margin-left: 6px;
+    color: #6c757d;
+    font-weight: normal;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.likes-pill i {
+    color: #6c757d;
+    margin-right: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.likes-pill i.liked {
+    color: #dc3545;
+}
+
+.likes-pill i:hover {
+    transform: scale(1.2);
+}
+
+.rate-star {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.rate-star:hover {
+    transform: scale(1.2);
+}
+
+/* نمط التقييم عند التحويم */
+.stars-wrap:hover .rate-star {
+    color: #dddddd;
+}
+
+.stars-wrap .rate-star:hover ~ .rate-star {
+    color: #dddddd;
+}
+
+.stars-wrap .rate-star:hover {
+    color: #ffc107 !important;
+}
+
+.stars-wrap .rate-star.hovered {
+    color: #ffc107;
+}
+
+/* تحسين سعر المنتج */
+.card-price {
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: #000000;
+    margin: 0.75rem 0;
+    direction: rtl; /* تغيير الاتجاه إلى يمين ليسار */
+    text-align: center;
+}
+
+/* تحسين زر التفاصيل */
+.btn-details {
+    background-color: #000000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+}
+
+.btn-details:hover {
+    background-color: #FF7A00;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* تخطيط البطاقة */
+.card-body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+}
+
+/* تنسيق العنوان والسعر */
+.card-title {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+/* تنسيق الوصف */
+.card-text {
+    color: #666;
+    margin-bottom: 0.75rem;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+/* غير مصنف */
+.category-badge {
+    color: #6c757d;
+    font-style: italic;
+    font-size: 0.8rem;
+    text-align: center;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    background-color: #f8f9fa;
+    padding: 3px 10px;
+    border-radius: 15px;
+    border: 1px solid #e0e0e0;
+}
+
+/* تنسيق قسم العروض */
+.offer-image-container {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #000000;
+}
+
+.offer-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* شارة الخصم */
+.discount-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #FF7A00;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* تاريخ انتهاء العرض */
+.offer-date {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0,0,0,0.7);
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+/* عنوان العرض */
+.offer-title {
+    color: #000000;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+/* وصف العرض */
+.offer-description {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+/* زر عرض التفاصيل */
+.btn-view-offer {
+    background-color: #000000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.btn-view-offer:hover {
+    background-color: #FF7A00;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* استايل للصنف */
+.category-badge {
+    font-size: 0.8rem;
+    background-color: #f8f9fa;
+    color: #666;
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+}
+
+/* تم إزالة أزرار الإعجاب من الصورة */
+.search-form {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    backdrop-filter: blur(10px);
+}
+
+/* تحسين رأس صفحة المتجر */
+.store-header {
+    background: #000000;
+    padding: 3rem 0;
+    margin-bottom: 2rem;
+    color: white;
+    border-bottom: 3px solid #FF7A00;
+}
+
+.store-profile-image {
+    height: 150px;
+    width: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* تحسين نموذج البحث */
+.search-form {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    backdrop-filter: blur(10px);
+}

@@ -1,0 +1,90 @@
+/* English version styles - LTR layout */
+body {
+    font-family: 'Poppins', sans-serif;
+    direction: ltr;
+    text-align: left;
+}
+
+.dark-header .logo {
+    margin-right: 0;
+    margin-left: 20px;
+}
+
+.dark-header .search-box {
+    margin-right: 0;
+    margin-left: 20px;
+}
+
+.dark-header .user-actions {
+    margin-left: 0;
+    margin-right: 20px;
+}
+
+.nav-list .nav-item {
+    margin-right: 0;
+    margin-left: 15px;
+}
+
+.dropdown-menu {
+    left: 0;
+    right: auto;
+    text-align: left;
+}
+
+.product-card .card-body {
+    text-align: left;
+}
+
+.address-card {
+    text-align: left;
+}
+
+.btn-group {
+    flex-direction: row;
+}
+
+.modal-header .btn-close {
+    margin: -0.5rem auto -0.5rem -0.5rem;
+}
+
+.form-check {
+    padding-left: 1.5em;
+    padding-right: 0;
+}
+
+.form-check .form-check-input {
+    float: left;
+    margin-left: 0;
+    margin-right: 0.5em;
+}
+
+.bi-chevron-right:before {
+    content: "\f284"; /* bi-chevron-left */
+}
+
+.bi-chevron-left:before {
+    content: "\f285"; /* bi-chevron-right */
+}
+
+/* Mobile menu adjustments */
+.mobile-menu {
+    left: -280px;
+    right: auto;
+    transform: translateX(-100%);
+}
+
+.mobile-menu.show {
+    transform: translateX(0);
+    left: 0;
+}
+
+.mobile-account-menu {
+    right: -280px;
+    left: auto;
+    transform: translateX(100%);
+}
+
+.mobile-account-menu.show {
+    transform: translateX(0);
+    right: 0;
+}

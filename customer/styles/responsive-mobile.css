@@ -1,0 +1,583 @@
+/**
+ * ملف تنسيقات متكامل للتوافق مع الأجهزة المحمولة
+ * يتضمن تحسينات لجميع صفحات العملاء في السوق الإلكتروني
+ */
+
+/* ===== تحسينات عامة للأجهزة المحمولة ===== */
+@media (max-width: 992px) {
+    /* تحسينات الهيدر والتنقل */
+    .dark-header .header-top {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .dark-header .logo {
+        margin-left: 0;
+    }
+    
+    .dark-header .search-container {
+        order: 3;
+        flex-basis: 100%;
+        max-width: 100%;
+        margin-top: 10px;
+    }
+    
+    .dark-header .user-actions {
+        margin-left: auto;
+    }
+    
+    /* تحسين القائمة الرئيسية */
+    .main-nav .nav-list {
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 5px;
+        margin-bottom: -5px;
+        justify-content: flex-start;
+    }
+    
+    .main-nav .nav-item {
+        flex: 0 0 auto;
+    }
+    
+    /* تحسين حجم الخط والعناصر */
+    body {
+        font-size: 14px;
+    }
+    
+    h1, .h1 {
+        font-size: 1.8rem;
+    }
+    
+    h2, .h2 {
+        font-size: 1.5rem;
+    }
+    
+    h3, .h3 {
+        font-size: 1.3rem;
+    }
+    
+    .section-title {
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+    }
+    
+    /* تحسين المسافات */
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    .py-5 {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+    }
+    
+    .py-4 {
+        padding-top: 1.5rem !important;
+        padding-bottom: 1.5rem !important;
+    }
+}
+
+/* ===== تحسينات للأجهزة المتوسطة (التابلت) ===== */
+@media (max-width: 768px) {
+    /* تحسينات الهيدر والتنقل */
+    .dark-header .user-dropdown .dropdown-menu {
+        position: fixed;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        border-radius: 15px 15px 0 0;
+        transform: translateY(100%);
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        max-height: 80vh;
+        overflow-y: auto;
+        z-index: 1050;
+        box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        display: block;
+        pointer-events: none;
+    }
+    
+    .dark-header .user-dropdown .dropdown-menu.show {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
+    
+    /* إضافة طبقة تغطية عند فتح القائمة */
+    .dark-header .user-dropdown .dropdown-menu:before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+    }
+    
+    .dark-header .user-dropdown .dropdown-menu.show:before {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    
+    /* تحسين زر المستخدم للتفاعل على الجوال */
+    .dark-header .user-btn {
+        padding: 8px 12px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .dark-header .user-btn i {
+        font-size: 1.5rem;
+    }
+    
+    /* رابط الحساب للأجهزة المحمولة */
+    .dark-header .mobile-account-link {
+        background-color: rgba(255, 255, 255, 0.15);
+        color: var(--text-white);
+        transition: background-color 0.2s ease;
+        -webkit-tap-highlight-color: transparent; /* إزالة تأثير النقر على iOS */
+    }
+    
+    .dark-header .mobile-account-link:active {
+        background-color: var(--primary);
+    }
+    
+    /* إضافة طبقة تغطية عند فتح قائمة المستخدم */
+    .user-menu-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1040;
+    }
+    
+    .user-menu-overlay.show {
+        display: block;
+    }
+    
+    /* تحسين عرض البطاقات */
+    .row-cols-md-4 > * {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    
+    /* تحسين أزرار التصفية */
+    .filter-sidebar {
+        margin-bottom: 1.5rem;
+        padding: 15px;
+    }
+    
+    .filter-title {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+    
+    /* تحسين عرض المنتجات */
+    .product-card {
+        margin-bottom: 15px;
+    }
+    
+    .product-card .card-body {
+        padding: 10px;
+    }
+    
+    .product-card .card-title {
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .product-card-image {
+        height: 160px;
+    }
+    
+    /* تحسين عرض المتاجر */
+    .store-card {
+        margin-bottom: 15px;
+    }
+    
+    .store-logo {
+        width: 80px;
+        height: 80px;
+    }
+    
+    /* صفحة تفاصيل المتجر */
+    .store-header .row {
+        flex-direction: column;
+    }
+    
+    .store-header .col-md-3 {
+        margin-bottom: 1rem;
+    }
+    
+    .store-search-container {
+        max-width: 100%;
+    }
+    
+    .store-stats {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    /* صفحة تفاصيل المنتج */
+    .product-details-container .row {
+        flex-direction: column;
+    }
+    
+    .product-image-gallery {
+        margin-bottom: 1.5rem;
+    }
+    
+    .product-info {
+        padding-left: 0;
+    }
+    
+    /* تحسين أزرار التنقل بين الصفحات */
+    .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .page-link {
+        padding: 0.4rem 0.75rem;
+    }
+    
+    /* تحسين الأزرار العائمة */
+    .floating-action-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 1.2rem;
+        bottom: 20px;
+        right: 20px;
+    }
+}
+
+/* ===== تحسينات للأجهزة الصغيرة (الجوالات) ===== */
+@media (max-width: 576px) {
+    /* تحسين الهيدر */
+    .dark-header .logo a {
+        font-size: 1.1rem;
+    }
+    
+    .dark-header .logo i {
+        font-size: 1.8rem;
+    }
+    
+    .search-form {
+        height: 40px;
+    }
+    
+    .search-input {
+        font-size: 13px;
+    }
+    
+    /* تحسين عرض المنتجات */
+    .row-cols-md-4 > * {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    
+    .product-card-image {
+        height: 180px;
+    }
+    
+    .product-list-item .card-body {
+        padding: 10px;
+    }
+    
+    .product-list-item .col-md-3 {
+        max-width: 120px;
+    }
+    
+    /* تحسين عرض المتاجر */
+    .store-logo {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .store-name {
+        font-size: 1.8rem;
+    }
+    
+    /* تحسين صفحة تفاصيل المنتج */
+    .product-title {
+        font-size: 1.5rem;
+    }
+    
+    .product-price {
+        font-size: 1.3rem;
+    }
+    
+    .product-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .product-actions .btn {
+        margin-bottom: 10px;
+    }
+    
+    /* تحسين التعليقات والتقييمات */
+    .review-item {
+        padding: 10px;
+    }
+    
+    .review-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .review-date {
+        margin-top: 5px;
+    }
+    
+    /* تحسين قسم العنوان */
+    .hero-section {
+        padding: 30px 0;
+    }
+    
+    .hero-slider {
+        margin-bottom: 20px;
+    }
+    
+    .slide-item {
+        height: 200px;
+    }
+    
+    .feature-cards {
+        flex-direction: column;
+    }
+    
+    .feature-card {
+        width: 100%;
+        margin-bottom: 15px;
+        height: 120px;
+    }
+}
+
+/* ===== تحسينات للأجهزة الصغيرة جداً ===== */
+@media (max-width: 400px) {
+    /* تحسين الهيدر */
+    .dark-header .header-top {
+        padding: 10px 0;
+    }
+    
+    .main-nav .nav-link {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+    
+    /* تحسين عرض المنتجات */
+    .product-card-image {
+        height: 150px;
+    }
+    
+    /* تحسين صفحة تفاصيل المنتج */
+    .product-gallery-main {
+        height: 250px;
+    }
+    
+    .product-gallery-thumbs {
+        height: 60px;
+    }
+    
+    /* تحسين قسم العنوان */
+    .slide-item {
+        height: 180px;
+    }
+}
+
+/* ===== تحسينات القائمة الجانبية للجوال ===== */
+.mobile-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 85%;
+    max-width: 320px;
+    background-color: var(--dark);
+    z-index: 2000;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.mobile-menu.show {
+    transform: translateX(0);
+}
+
+.mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.mobile-menu-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mobile-menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    border-bottom: 1px solid var(--border-dark);
+}
+
+.mobile-menu-close {
+    color: var(--text-white);
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    padding: 5px;
+}
+
+.mobile-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-white);
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.mobile-logo i {
+    color: var(--primary);
+    font-size: 1.4rem;
+}
+
+.mobile-menu-content {
+    padding: 15px;
+}
+
+.mobile-menu-title {
+    color: var(--text-lighter);
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.mobile-menu-list {
+    margin-bottom: 20px;
+}
+
+.mobile-menu-item {
+    margin-bottom: 5px;
+}
+
+.mobile-menu-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    color: var(--text-white);
+    border-radius: var(--radius-md);
+    transition: background-color 0.2s ease;
+}
+
+.mobile-menu-link:hover, .mobile-menu-link:focus {
+    background-color: var(--dark-lighter);
+    color: var(--text-white);
+}
+
+.mobile-menu-link i {
+    color: var(--primary);
+    font-size: 1.2rem;
+}
+
+/* ===== زر فتح القائمة الجانبية ===== */
+.mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-white);
+    font-size: 1.5rem;
+    padding: 5px;
+    margin-right: 10px;
+}
+
+@media (max-width: 992px) {
+    .mobile-menu-toggle {
+        display: block;
+    }
+    
+    .main-nav .nav-list {
+        display: none;
+    }
+}
+
+/* ===== تحسينات زر العودة للأعلى ===== */
+.back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: var(--primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-3px);
+}
+
+/* ===== تحسينات عرض الصور ===== */
+.product-gallery-main img,
+.product-card-image img {
+    object-fit: contain;
+    background-color: #f8f9fa;
+}
+
+/* ===== تحسينات أزرار المشاركة ===== */
+.share-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+@media (max-width: 576px) {
+    .share-buttons {
+        justify-content: center;
+    }
+}

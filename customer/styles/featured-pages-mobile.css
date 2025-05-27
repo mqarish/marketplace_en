@@ -1,0 +1,153 @@
+/**
+ * تحسينات التوافق مع الأجهزة المحمولة لصفحات المميزة (الأكثر تقييماً، الأكثر إعجاباً، العروض)
+ * يحتوي على إصلاحات وتحسينات لعرض هذه الصفحات بشكل صحيح على جميع أحجام الشاشات
+ */
+
+/* ===== تحسينات عامة للصفحات المميزة على الأجهزة المحمولة ===== */
+@media (max-width: 768px) {
+    /* تحسين رأس الصفحة */
+    .page-header {
+        padding: 20px 0;
+        margin-bottom: 20px;
+    }
+    
+    .page-title {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+    
+    .page-description {
+        font-size: 0.9rem;
+    }
+    
+    /* تحسين بطاقات المنتجات */
+    .product-card {
+        margin-bottom: 15px;
+    }
+    
+    .product-card .card-body {
+        padding: 10px;
+    }
+    
+    .product-card .card-title {
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .product-card-image {
+        height: 160px;
+    }
+    
+    /* تحسين عرض العروض */
+    .offer-badge {
+        font-size: 0.8rem;
+        padding: 3px 8px;
+    }
+    
+    .discount-label {
+        font-size: 0.85rem;
+    }
+    
+    /* تحسين أزرار التصفية */
+    .filter-options {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-options .form-select,
+    .filter-options .form-control {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+    
+    /* تحسين ترقيم الصفحات */
+    .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .page-link {
+        padding: 0.4rem 0.75rem;
+    }
+}
+
+/* ===== تحسينات للأجهزة الصغيرة جداً ===== */
+@media (max-width: 576px) {
+    /* تعديل عرض بطاقات المنتجات */
+    .product-grid .col {
+        width: 100%;
+    }
+    
+    .product-card {
+        padding: 10px;
+    }
+    
+    .product-card .card-title {
+        font-size: 0.9rem;
+    }
+    
+    .product-price {
+        font-size: 0.9rem;
+    }
+    
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+    }
+    
+    /* تحسين عرض العروض */
+    .offer-card {
+        margin-bottom: 15px;
+    }
+    
+    .offer-title {
+        font-size: 1.1rem;
+    }
+    
+    .offer-description {
+        font-size: 0.85rem;
+    }
+    
+    /* تحسين حالة عدم وجود منتجات */
+    .no-results {
+        padding: 20px;
+    }
+    
+    .no-results-icon {
+        font-size: 3rem;
+        margin-bottom: 15px;
+    }
+    
+    .no-results-title {
+        font-size: 1.2rem;
+    }
+    
+    .no-results-text {
+        font-size: 0.9rem;
+    }
+}
+
+/* تحسينات إضافية للتفاعل */
+.product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* تحسينات خاصة بصفحة العروض */
+@media (max-width: 768px) {
+    .deal-countdown {
+        font-size: 0.9rem;
+    }
+    
+    .deal-timer {
+        padding: 5px 10px;
+    }
+    
+    .deal-timer-unit {
+        font-size: 0.8rem;
+    }
+}
