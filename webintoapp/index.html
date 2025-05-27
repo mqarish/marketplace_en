@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>سوق المتجر</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <div class="splash-screen" id="splash-screen">
+            <div class="logo-container">
+                <img src="logo.png" alt="سوق المتجر" class="logo">
+                <h1>سوق المتجر</h1>
+                <p>تسوق بسهولة وأمان</p>
+            </div>
+            <div class="loading-spinner"></div>
+        </div>
+
+        <div class="main-content" id="main-content" style="display: none;">
+            <header class="app-header">
+                <div class="header-content">
+                    <h1>سوق المتجر</h1>
+                    <div class="header-icons">
+                        <button class="icon-button" id="notifications-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                            </svg>
+                        </button>
+                        <button class="icon-button" id="cart-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="9" cy="21" r="1"></circle>
+                                <circle cx="20" cy="21" r="1"></circle>
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                            </svg>
+                            <span class="cart-count" id="cart-count">0</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="search-bar">
+                    <input type="text" placeholder="ابحث عن منتجات..." id="search-input">
+                    <button id="search-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+                </div>
+            </header>
+
+            <nav class="bottom-nav">
+                <button class="nav-item active" data-page="home">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    <span>الرئيسية</span>
+                </button>
+                <button class="nav-item" data-page="categories">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="8" y1="6" x2="21" y2="6"></line>
+                        <line x1="8" y1="12" x2="21" y2="12"></line>
+                        <line x1="8" y1="18" x2="21" y2="18"></line>
+                        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                    </svg>
+                    <span>الأقسام</span>
+                </button>
+                <button class="nav-item" data-page="favorites">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                    <span>المفضلة</span>
+                </button>
+                <button class="nav-item" data-page="orders">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    <span>الطلبات</span>
+                </button>
+                <button class="nav-item" data-page="profile">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <span>حسابي</span>
+                </button>
+            </nav>
+
+            <main class="page-content">
+                <div id="home-page" class="page active">
+                    <div class="banner-slider">
+                        <div class="banner">
+                            <img src="banner1.jpg" alt="عروض خاصة">
+                        </div>
+                    </div>
+
+                    <div class="categories-section">
+                        <div class="section-header">
+                            <h2>التصنيفات</h2>
+                            <a href="#" class="view-all">عرض الكل</a>
+                        </div>
+                        <div class="categories-grid">
+                            <div class="category-item">
+                                <div class="category-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                                        <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                                    </svg>
+                                </div>
+                                <span>الإلكترونيات</span>
+                            </div>
+                            <div class="category-item">
+                                <div class="category-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                                    </svg>
+                                </div>
+                                <span>الملابس</span>
+                            </div>
+                            <div class="category-item">
+                                <div class="category-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                                        <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                                        <line x1="6" y1="1" x2="6" y2="4"></line>
+                                        <line x1="10" y1="1" x2="10" y2="4"></line>
+                                        <line x1="14" y1="1" x2="14" y2="4"></line>
+                                    </svg>
+                                </div>
+                                <span>المنزل</span>
+                            </div>
+                            <div class="category-item">
+                                <div class="category-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 2v6h6"></path>
+                                        <path d="M3 13a9 9 0 1 0 3-7.7L3 8"></path>
+                                    </svg>
+                                </div>
+                                <span>الرياضة</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="products-section">
+                        <div class="section-header">
+                            <h2>العروض المميزة</h2>
+                            <a href="#" class="view-all">عرض الكل</a>
+                        </div>
+                        <div class="products-grid" id="featured-products">
+                            <!-- سيتم تحميل المنتجات هنا -->
+                        </div>
+                    </div>
+
+                    <div class="products-section">
+                        <div class="section-header">
+                            <h2>وصل حديثاً</h2>
+                            <a href="#" class="view-all">عرض الكل</a>
+                        </div>
+                        <div class="products-grid" id="new-products">
+                            <!-- سيتم تحميل المنتجات هنا -->
+                        </div>
+                    </div>
+                </div>
+
+                <div id="categories-page" class="page">
+                    <h2>الأقسام</h2>
+                    <div class="categories-list" id="all-categories">
+                        <!-- سيتم تحميل الأقسام هنا -->
+                    </div>
+                </div>
+
+                <div id="favorites-page" class="page">
+                    <h2>المفضلة</h2>
+                    <div class="products-grid" id="favorite-products">
+                        <!-- سيتم تحميل المنتجات المفضلة هنا -->
+                    </div>
+                </div>
+
+                <div id="orders-page" class="page">
+                    <h2>طلباتي</h2>
+                    <div class="orders-list" id="user-orders">
+                        <!-- سيتم تحميل الطلبات هنا -->
+                    </div>
+                </div>
+
+                <div id="profile-page" class="page">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <div class="profile-info">
+                            <h2 id="user-name">تسجيل الدخول</h2>
+                            <p id="user-email"></p>
+                        </div>
+                    </div>
+
+                    <div class="profile-menu">
+                        <a href="#" class="profile-menu-item" id="login-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                                <polyline points="10 17 15 12 10 7"></polyline>
+                                <line x1="15" y1="12" x2="3" y2="12"></line>
+                            </svg>
+                            <span>تسجيل الدخول</span>
+                        </a>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- قوالب المنتجات -->
+        <template id="product-template">
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="" alt="">
+                    <button class="favorite-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title"></h3>
+                    <div class="product-price">
+                        <span class="current-price"></span>
+                        <span class="original-price"></span>
+                    </div>
+                    <div class="product-rating">
+                        <div class="stars"></div>
+                        <span class="rating-count"></span>
+                    </div>
+                    <button class="add-to-cart-btn">إضافة للسلة</button>
+                </div>
+            </div>
+        </template>
+
+        <!-- نوافذ منبثقة -->
+        <div class="modal" id="login-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>تسجيل الدخول</h2>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="email">البريد الإلكتروني</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">كلمة المرور</label>
+                            <input type="password" id="password" required>
+                        </div>
+                        <button type="submit" class="btn-primary">تسجيل الدخول</button>
+                    </form>
+                    <p class="form-footer">ليس لديك حساب؟ <a href="#" id="register-link">إنشاء حساب</a></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="register-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>إنشاء حساب</h2>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="register-form">
+                        <div class="form-group">
+                            <label for="name">الاسم</label>
+                            <input type="text" id="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-email">البريد الإلكتروني</label>
+                            <input type="email" id="register-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-password">كلمة المرور</label>
+                            <input type="password" id="register-password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm-password">تأكيد كلمة المرور</label>
+                            <input type="password" id="confirm-password" required>
+                        </div>
+                        <button type="submit" class="btn-primary">إنشاء حساب</button>
+                    </form>
+                    <p class="form-footer">لديك حساب بالفعل؟ <a href="#" id="login-link">تسجيل الدخول</a></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="toast" id="toast">
+            <div class="toast-content"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
